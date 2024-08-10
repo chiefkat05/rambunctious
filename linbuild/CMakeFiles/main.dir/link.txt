@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/main.dir/sources/main.cpp.o CMakeFiles/main.dir/sources/sprite.cpp.o -o main  -lsfml-graphics -lsfml-window -lsfml-system

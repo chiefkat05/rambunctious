@@ -1,0 +1,3 @@
+/home/chiefkat/Documents/vscodeprojects/rambunctious/linbuild/CMakeFiles/main.dir
+/home/chiefkat/Documents/vscodeprojects/rambunctious/linbuild/CMakeFiles/edit_cache.dir
+/home/chiefkat/Documents/vscodeprojects/rambunctious/linbuild/CMakeFiles/rebuild_cache.dir
