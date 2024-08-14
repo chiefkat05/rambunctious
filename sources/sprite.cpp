@@ -16,7 +16,7 @@ sprite::sprite()
     img = 0;
 }
 
-sprite::sprite(const char *_path, float _x, float _y, float _w, float _h)
+sprite::sprite(const char *_path, float _x, float _y, float _w, float _h, unsigned int _fx, unsigned int _fy)
 {
     bool foundMatchingTexture = false;
     for (unsigned int i = 0; i < tPile.count; ++i)
@@ -43,18 +43,17 @@ sprite::sprite(const char *_path, float _x, float _y, float _w, float _h)
     }
 
     rect = sf::Sprite(tPile.list[img]);
+    framesX = _fx;
+    framesY = _fy;
 
     path = _path;
 
     rect.setPosition(sf::Vector2(_x, _y));
 
-    spriteW = tPile.list[img].getSize().x;
-    spriteH = tPile.list[img].getSize().y;
+    spriteW = tPile.list[img].getSize().x / framesX;
+    spriteH = tPile.list[img].getSize().y / framesY;
 
-    framesX = spriteW / 16.0f;
-    framesY = spriteH / 16.0f;
-
-    rect.setScale(sf::Vector2(_w, _h));
+    rect.setScale(sf::Vector2(_w / spriteW, _h / spriteH));
 }
 
 void sprite::Put(float _x, float _y)

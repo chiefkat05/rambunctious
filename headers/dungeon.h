@@ -21,11 +21,11 @@ struct room
             {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
                 {
-                    tiles[x][y] = sprite(wallImgPath, static_cast<float>(x), static_cast<float>(y), scaleX, scaleY);
+                    tiles[x][y] = sprite(wallImgPath, static_cast<float>(x), static_cast<float>(y), scaleX, scaleY, 1, 1);
                 }
                 else
                 {
-                    tiles[x][y] = sprite(floorImgPath, static_cast<float>(x), static_cast<float>(y), scaleX, scaleY);
+                    tiles[x][y] = sprite(floorImgPath, static_cast<float>(x), static_cast<float>(y), scaleX, scaleY, 1, 1);
                 }
 
                 tiles[x][y].Put(static_cast<float>(x) * tiles[x][y].spriteW * scaleX, static_cast<float>(y) * tiles[x][y].spriteH * scaleY);
@@ -35,8 +35,7 @@ struct room
         // random width and height
     }
 
-    void
-    draw(sf::RenderWindow *win)
+    void draw(sf::RenderWindow *win)
     {
         for (unsigned int x = 0; x < width; ++x)
         {

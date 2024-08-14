@@ -6,7 +6,7 @@ float mouseX, mouseY;
 bool mousePressed, mouseClicked, mouseReleased;
 const float massScale = 2.0f;
 
-void playerControl(player &p)
+void unitControl(player &p)
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
@@ -50,11 +50,43 @@ void mouseUpdate()
     }
 }
 
+int prevState = -1;
+// edit all guis here
+void menuData()
+{
+    if (state == prevState)
+        return;
+
+    gui_data.buttons.clear();
+
+    switch (state)
+    {
+    case START_SCREEN:
+        gui_data.background = sprite("../img/ui/backgrounds/start.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
+        gui_data.buttons.push_back(button("../img/ui/buttons/start.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
+        break;
+    case MENU_SCREEN:
+        gui_data.background = sprite("../img/ui/backgrounds/menu.png", 0.0f, 0.0f, 256.0f, 128.0f, 3, 1);
+        gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
+        gui_data.buttons.push_back(button("../img/ui/buttons/quit.png", 80.0f, 40.0f, 16.0f, 16.0f, quitGame));
+        break;
+    case CHARACTER_CREATION_SCREEN:
+        gui_data.background = sprite("../img/ui/backgrounds/character.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
+        break;
+    default:
+        break;
+    }
+
+    gui_data.menuBG = animation(&gui_data.background, 0, gui_data.background.framesX - 1, 18.0f);
+
+    prevState = state;
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(256, 128), "rambunctious_alpha_0.0");
 
-    sprite violent("../img/classes/violent/brawler.png", 100.0f, 100.0f, massScale, massScale);
+    sprite violent("../img/classes/violent/brawler.png", 100.0f, 100.0f, massScale, massScale, 5, 1);
     // sf::Sprite s(textures[0]);
 
     room floor1("../img/tiles/walls/blue.png", "../img/tiles/floors/blue.png", massScale, massScale);
@@ -68,8 +100,6 @@ int main()
     sf::Time sfTime;
 
     animation c1Idle(c1.visual, 0, 5, 150.0f);
-
-    stategui.screenInitialization();
 
     while (window.isOpen())
     {
@@ -89,7 +119,7 @@ int main()
                 window.close();
         }
 
-        // playerControl(mainPlayer);
+        // unitControl(mainPlayer);
         mouseUpdate();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -97,7 +127,8 @@ int main()
 
         window.clear();
 
-        stategui.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased);
+        menuData();
+        gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);
 
         window.display();
     }

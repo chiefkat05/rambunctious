@@ -153,6 +153,30 @@ sources/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/sources/main.cpp.s
 .PHONY : sources/main.cpp.s
 
+sources/sprite.obj: sources/sprite.cpp.obj
+.PHONY : sources/sprite.obj
+
+# target to build an object file
+sources/sprite.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/sources/sprite.cpp.obj
+.PHONY : sources/sprite.cpp.obj
+
+sources/sprite.i: sources/sprite.cpp.i
+.PHONY : sources/sprite.i
+
+# target to preprocess a source file
+sources/sprite.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/sources/sprite.cpp.i
+.PHONY : sources/sprite.cpp.i
+
+sources/sprite.s: sources/sprite.cpp.s
+.PHONY : sources/sprite.s
+
+# target to generate assembly for a file
+sources/sprite.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/sources/sprite.cpp.s
+.PHONY : sources/sprite.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -165,6 +189,9 @@ help:
 	@echo "... sources/main.obj"
 	@echo "... sources/main.i"
 	@echo "... sources/main.s"
+	@echo "... sources/sprite.obj"
+	@echo "... sources/sprite.i"
+	@echo "... sources/sprite.s"
 .PHONY : help
 
 

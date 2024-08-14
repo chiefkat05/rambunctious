@@ -24,7 +24,7 @@ struct sprite
 
     sprite();
 
-    sprite(const char *_path, float _x, float _y, float _w, float _h);
+    sprite(const char *_path, float _x, float _y, float _w, float _h, unsigned int _fx, unsigned int _fy);
 
     void Put(float _x, float _y);
     void Move(float _xDist, float _yDist);
@@ -39,6 +39,11 @@ struct animation
     unsigned int frame = 0;
 
     sprite *_sprite;
+
+    animation()
+    {
+        _sprite = nullptr;
+    }
 
     animation(sprite *sp, unsigned int s, unsigned int e = 1, float spd = 1.0f) : _sprite(sp)
     {
@@ -58,7 +63,7 @@ struct animation
 
         timer -= speed * delta_time;
 
-        _sprite->rect.setTextureRect(sf::IntRect(frame % _sprite->framesX * 16.0f, frame / _sprite->framesX * 16.0f, 16, 16));
+        _sprite->rect.setTextureRect(sf::IntRect(frame % _sprite->framesX * _sprite->spriteW, frame / _sprite->framesX * _sprite->spriteH, _sprite->spriteW, _sprite->spriteH));
     }
 };
 

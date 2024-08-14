@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/chiefkat/Documents/vscodeprojects/rambunctious/sources/main.cpp" "CMakeFiles/main.dir/sources/main.cpp.obj" "gcc" "CMakeFiles/main.dir/sources/main.cpp.obj.d"
+  "/home/chiefkat/Documents/vscodeprojects/rambunctious/sources/sprite.cpp" "CMakeFiles/main.dir/sources/sprite.cpp.obj" "gcc" "CMakeFiles/main.dir/sources/sprite.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
