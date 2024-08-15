@@ -116,21 +116,18 @@ int main()
     sprite violent("../img/classes/violent/brawler.png", 120.0f, 40.0f, massScale * 16.0f, massScale * 16.0f, 6, 1);
     sprite detective("../img/classes/violent/detective.png", 130.0f, 40.0f, massScale * 16.0f, massScale * 16.0f, 6, 1);
     sprite bloom("../img/classes/violent/bloom.png", 110.0f, 40.0f, massScale * 16.0f, massScale * 16.0f, 6, 1);
-    // sf::Sprite s(textures[0]);
+    sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, massScale * 16.0f, massScale * 16.0f, 1, 1);
 
     room floor1("../img/tiles/walls/blue.png", "../img/tiles/floors/blue.png", massScale, massScale);
-    character c1(&violent);
-    character c2(&detective);
-    character c3(&bloom);
+    character c1(&violent, CH_PLAYER);
+    character c2(&detective, CH_PLAYER);
+    character c3(&bloom, CH_PLAYER);
     player mainPlayer;
     mainPlayer.allies[0] = c1;
     mainPlayer.allies[1] = c2;
     mainPlayer.allies[2] = c3;
-    for (int i = 0; i < 3; ++i)
-    {
-        mainPlayer.allies[i].walkToX = mainPlayer.allies[i].posX;
-        mainPlayer.allies[i].walkToY = mainPlayer.allies[i].posY;
-    }
+
+    character e1(&megdrer, CH_MONSTER);
 
     sf::Clock sfClock;
     sf::Time sfTime;
@@ -138,6 +135,11 @@ int main()
     animation c1Idle(c1.visual, 0, 5, 150.0f);
     animation c2Idle(c2.visual, 0, 5, 150.0f);
     animation c3Idle(c3.visual, 0, 5, 150.0f);
+    animation e1Idle(e1.visual, 0, 5, 150.0f);
+
+    game_system game;
+    game.Add(&mainPlayer);
+    game.Add(&e1);
 
     while (window.isOpen())
     {
@@ -170,7 +172,14 @@ int main()
         {
             unitControl(mainPlayer);
 
+            c1Idle.run(delta_time);
+            c2Idle.run(delta_time);
+            c3Idle.run(delta_time);
+            // e1Idle.run(delta_time);
+
             floor1.draw(&window);
+            game.update(delta_time);
+
             for (int i = 0; i < character_limit; ++i)
             {
                 if (mainPlayer.allies[i].visual == nullptr)
@@ -178,8 +187,7 @@ int main()
                     continue;
                 }
                 window.draw(mainPlayer.allies[i].visual->rect);
-                mainPlayer.allies[i].Update(delta_time);
-                mainPlayer.allies[i].visual->Move(40.0f * delta_time, 0.0f);
+                // mainPlayer.allies[i].Update(delta_time);
 
                 if (!mainPlayer.selected[i])
                 {
@@ -187,11 +195,10 @@ int main()
                         mainPlayer.allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 255));
                     continue;
                 }
-                mainPlayer.allies[i].visual->rect.setColor(sf::Color(150, 150, 150, 100 + sin(current_time * 3.0f) * 70.0f));
+                mainPlayer.allies[i].visual->rect.setColor(sf::Color(100, 100, 100, 100 + sin(current_time * 3.0f) * 70.0f));
             }
-            c1Idle.run(delta_time);
-            c2Idle.run(delta_time);
-            c3Idle.run(delta_time);
+
+            window.draw(e1.visual->rect);
         }
 
         window.display();
