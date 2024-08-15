@@ -21,11 +21,11 @@ struct room
             {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
                 {
-                    tiles[x][y] = sprite(wallImgPath, static_cast<float>(x), static_cast<float>(y), scaleX, scaleY, 1, 1);
+                    tiles[x][y] = sprite(wallImgPath, static_cast<float>(x), static_cast<float>(y), scaleX * 16.0f, scaleY * 16.0f, 1, 1);
                 }
                 else
                 {
-                    tiles[x][y] = sprite(floorImgPath, static_cast<float>(x), static_cast<float>(y), scaleX, scaleY, 1, 1);
+                    tiles[x][y] = sprite(floorImgPath, static_cast<float>(x), static_cast<float>(y), scaleX * 16.0f, scaleY * 16.0f, 1, 1);
                 }
 
                 tiles[x][y].Put(static_cast<float>(x) * tiles[x][y].spriteW * scaleX, static_cast<float>(y) * tiles[x][y].spriteH * scaleY);

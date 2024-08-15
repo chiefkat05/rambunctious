@@ -78,27 +78,6 @@ struct gui
     animation menuBG;
     bool quit = false;
 
-    //     case DUNGEON_SCREEN:
-    //         // mainPlayer.allies[0].Update(delta_time);
-    //         // if (mainPlayer.selected[0])
-    //         // {
-    //         //     mainPlayer.allies[0].visual.rect.setColor(sf::Color(150, 150, 150, 100 + sin(current_time * 3.0f) * 70.0f));
-    //         // }
-    //         // if (!mainPlayer.selected[0])
-    //         // {
-    //         //     mainPlayer.allies[0].visual.rect.setColor(sf::Color(255, 255, 255, 255));
-    //         // }
-
-    //         // violent.Move(40.0f * delta_time, 0.0f);
-    //         // c1Idle.run(delta_time);
-
-    //         // floor1.draw(&window);
-    //         // window.draw(mainPlayer.allies[0].visual.rect);
-    //         break;
-    //     default:
-    //         break;
-    //     }
-
     void screenDraw(sf::RenderWindow *window, float mouseX, float mouseY, bool mousePressed, bool mouseReleased, float delta_time)
     {
         if (quit)

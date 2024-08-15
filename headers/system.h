@@ -29,7 +29,7 @@ struct character
     STATUS statuses[stat_limit];
     float posX = 0.0f, posY = 0.0f, selectionSize = 4.0f;
     float walkToX = 0.0f, walkToY = 0.0f;
-    sprite *visual;
+    sprite *visual = nullptr;
 
     unsigned int initiative = 0;
 
@@ -38,6 +38,8 @@ struct character
     {
         visual->rect.setTextureRect(sf::IntRect(0, 0, 16, 16));
         visual->rect.setOrigin(sf::Vector2(8.0f, 16.0f));
+        posX = visual->rect.getPosition().x;
+        posY = visual->rect.getPosition().y;
     }
 
     void MoveTo(float _x, float _y)
