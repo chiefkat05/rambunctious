@@ -4,25 +4,79 @@
 
 float mouseX, mouseY;
 bool mousePressed, mouseClicked, mouseReleased;
-const float massScale = 2.0f;
+float massScale = 1.0f, massYOffset = 0.0f;
 
-void unitControl(player &p)
+void unitControl(game_system &game, player &p, sf::RenderWindow &window)
 {
+    static sprite sTopLeft("../img/ui/unit-control/playerselect-c.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sTopRight("../img/ui/unit-control/playerselect-c-h.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sBottomLeft("../img/ui/unit-control/playerselect-c-v.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sBottomRight("../img/ui/unit-control/playerselect-c-vh.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sMove("../img/ui/unit-control/playertarget-move.png", 0.0f, 0.0f, 16.0f, 16.0f, 1, 1);
+    static sprite sAttack("../img/ui/unit-control/playertarget-attack.png", 0.0f, 0.0f, 16.0f, 16.0f, 1, 1);
+    static float boxMinX, boxMinY, boxMaxX, boxMaxY;
+
     if (mouseClicked)
     {
         for (int i = 0; i < character_limit; ++i)
         {
             p.selected[i] = false;
         }
+
+        boxMinX = mouseX;
+        boxMinY = mouseY - massYOffset;
     }
     if (mousePressed)
     {
-        p.select(mouseX, mouseY);
+        boxMaxX = mouseX;
+        boxMaxY = mouseY - massYOffset;
+        p.select(boxMinX, boxMinY, boxMaxX, boxMaxY);
+
+        sTopLeft.Put(boxMinX * massScale, boxMinY * massScale);
+        window.draw(sTopLeft.rect);
+        sTopRight.Put(boxMaxX * massScale - 8.0f, boxMinY * massScale);
+        window.draw(sTopRight.rect);
+        sBottomLeft.Put(boxMinX * massScale, boxMaxY * massScale - 8.0f);
+        window.draw(sBottomLeft.rect);
+        sBottomRight.Put(boxMaxX * massScale - 8.0f, boxMaxY * massScale - 8.0f);
+        window.draw(sBottomRight.rect);
     }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
     {
         int selectedCount = 0;
         float averageX = 0, averageY = 0;
+        character *targeted = nullptr;
+
+        for (int i = 0; i < entity_limit; ++i)
+        {
+            if (i > game.characterCount)
+                break;
+
+            if (game.characters[i] == nullptr)
+                continue;
+
+            bool targettedFriend = false;
+            for (int j = 0; j < character_limit; ++j)
+            {
+                if (game.characters[i] == &p.allies[j])
+                {
+                    targettedFriend = true;
+                    break;
+                }
+            }
+
+            if (targettedFriend)
+                continue;
+
+            if (mouseX > game.characters[i]->posX / massScale - game.characters[i]->selectionSize / massScale &&
+                mouseX < game.characters[i]->posX / massScale + game.characters[i]->selectionSize / massScale &&
+                mouseY > game.characters[i]->posY / massScale + massYOffset - game.characters[i]->selectionSize / massScale &&
+                mouseY < game.characters[i]->posY / massScale + massYOffset + game.characters[i]->selectionSize / massScale)
+            {
+                targeted = game.characters[i];
+                break;
+            }
+        }
 
         // two for-loops seems redundant, please optimize
         for (int i = 0; i < character_limit; ++i)
@@ -44,8 +98,19 @@ void unitControl(player &p)
             float offsetX = p.allies[i].posX - averageX;
             float offsetY = p.allies[i].posY - averageY;
 
-            p.allies[i].MoveTo(mouseX + offsetX,
-                               mouseY + offsetY);
+            p.allies[i].MoveTo(mouseX * massScale + offsetX,
+                               mouseY * massScale + offsetY - massYOffset * massScale);
+            if (targeted != nullptr)
+            {
+                p.allies[i].target = targeted;
+                sAttack.Put(mouseX / massScale - 8.0f / massScale, mouseY / massScale - 16.0f / massScale + massYOffset);
+                window.draw(sAttack.rect);
+            }
+            else
+            {
+                sMove.Put(mouseX * massScale - 8.0f, mouseY * massScale - massYOffset * massScale - 16.0f);
+                window.draw(sMove.rect);
+            }
         }
     }
 }
@@ -95,7 +160,7 @@ void menuData()
         break;
     case CHARACTER_CREATION_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/character.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
-        gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 120.0f, 120.0f, 16.0f, 16.0f, startGame));
+        gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 210.0f, 110.0f, 16.0f, 16.0f, startGame));
         break;
     case DUNGEON_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/dungeon.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
@@ -112,30 +177,32 @@ void menuData()
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(256, 128), "rambunctious_alpha_0.0");
+    sf::View screen(sf::FloatRect(0.0f, 0.0f, 256.0f, 128.0f));
 
-    sprite violent("../img/classes/violent/brawler.png", 120.0f, 40.0f, massScale * 16.0f, massScale * 16.0f, 6, 1);
-    sprite detective("../img/classes/violent/detective.png", 130.0f, 40.0f, massScale * 16.0f, massScale * 16.0f, 6, 1);
-    sprite bloom("../img/classes/violent/bloom.png", 110.0f, 40.0f, massScale * 16.0f, massScale * 16.0f, 6, 1);
-    sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, massScale * 16.0f, massScale * 16.0f, 1, 1);
+    window.setView(screen);
+
+    sprite violent("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 5, 4); // WHY IS HE TINY
+    sprite detective("../img/classes/violent/detective.png", 130.0f, 40.0f, 16.0f, 16.0f, 6, 1);
+    sprite bloom("../img/classes/violent/bloom.png", 110.0f, 40.0f, 16.0f, 16.0f, 6, 1);
+    sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, 16.0f, 16.0f, 1, 1);
 
     room floor1("../img/tiles/walls/blue.png", "../img/tiles/floors/blue.png", massScale, massScale);
-    character c1(&violent, CH_PLAYER);
-    character c2(&detective, CH_PLAYER);
-    character c3(&bloom, CH_PLAYER);
     player mainPlayer;
-    mainPlayer.allies[0] = c1;
-    mainPlayer.allies[1] = c2;
-    mainPlayer.allies[2] = c3;
+    mainPlayer.allies[0] = character(&violent, CH_PLAYER);
+    mainPlayer.allies[1] = character(&detective, CH_PLAYER);
+    mainPlayer.allies[2] = character(&bloom, CH_PLAYER);
+    mainPlayer.allies[2].hp = 100;
 
     character e1(&megdrer, CH_MONSTER);
 
     sf::Clock sfClock;
     sf::Time sfTime;
 
-    animation c1Idle(c1.visual, 0, 5, 150.0f);
-    animation c2Idle(c2.visual, 0, 5, 150.0f);
-    animation c3Idle(c3.visual, 0, 5, 150.0f);
-    animation e1Idle(e1.visual, 0, 5, 150.0f);
+    mainPlayer.allies[0].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
+    mainPlayer.allies[0].SetAnimation(ANIM_HURT, 5, 7, 150.0f);
+    mainPlayer.allies[1].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
+    mainPlayer.allies[2].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
+    e1.SetAnimation(ANIM_IDLE, 0, 0, 150.0f);
 
     game_system game;
     game.Add(&mainPlayer);
@@ -157,6 +224,15 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if (event.type == sf::Event::Resized)
+            {
+                float ratio = static_cast<float>(window.getSize().x) / static_cast<float>(window.getSize().y);
+                massScale = 256.0f / static_cast<float>(window.getSize().x);
+                massYOffset = (1 - ratio * 0.5f) * static_cast<float>(window.getSize().x * 0.32f);
+                screen.setSize(256.0f, 256.0f / ratio);
+                window.setView(screen);
+            }
         }
 
         mouseUpdate();
@@ -170,12 +246,7 @@ int main()
         gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);
         if (state == DUNGEON_SCREEN)
         {
-            unitControl(mainPlayer);
-
-            c1Idle.run(delta_time);
-            c2Idle.run(delta_time);
-            c3Idle.run(delta_time);
-            // e1Idle.run(delta_time);
+            unitControl(game, mainPlayer, window);
 
             floor1.draw(&window);
             game.update(delta_time);
@@ -187,7 +258,6 @@ int main()
                     continue;
                 }
                 window.draw(mainPlayer.allies[i].visual->rect);
-                // mainPlayer.allies[i].Update(delta_time);
 
                 if (!mainPlayer.selected[i])
                 {

@@ -52,13 +52,24 @@ struct animation
         speed = spd;
     }
 
-    void run(float delta_time)
+    void run(float delta_time, bool loop, bool *finishedBool = nullptr)
     {
         if (timer <= 0.0f)
         {
-            timer = 10.0f;
+            if (loop)
+            {
+                timer = 10.0f;
 
-            frame >= end ? frame = 0 : ++frame;
+                frame >= end ? frame = 0 : ++frame;
+            }
+            if (!loop)
+            {
+                timer = 10.0f;
+
+                frame >= end ? frame = end : ++frame;
+                *finishedBool = true;
+            } // pls fix window size thing and animation frames needing to be always x-oriented.
+            // ( I know it's not a big deal but if you do this now you can just copy the code in the future when you don't want to deal with this next time :) )
         }
 
         timer -= speed * delta_time;

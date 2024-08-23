@@ -10,6 +10,8 @@ void quitGame();
 
 sf::RenderWindow *win;
 
+extern float massScale, massYOffset;
+
 struct button
 {
     sprite visual;
@@ -37,7 +39,8 @@ struct button
 
     void update(float mouseX, float mouseY, bool mousePressed, bool mouseReleased)
     {
-        if (mouseX < posX || mouseX > posX + width || mouseY < posY || mouseY > posY + height)
+        if (mouseX < posX / massScale || mouseX > posX / massScale + width / massScale ||
+            mouseY < posY / massScale + massYOffset || mouseY > posY / massScale + height / massScale + massYOffset)
         {
             if (visual.rect.getColor().r < 255)
             {
@@ -90,7 +93,7 @@ struct gui
             window->draw(buttons[i].visual.rect);
             buttons[i].update(mouseX, mouseY, mousePressed, mouseReleased);
         }
-        menuBG.run(delta_time);
+        menuBG.run(delta_time, true);
     }
 };
 

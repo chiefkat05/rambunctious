@@ -39,6 +39,7 @@ sprite::sprite(const char *_path, float _x, float _y, float _w, float _h, unsign
     {
         tPile.paths[tPile.count] = _path;
         img = tPile.count;
+
         ++tPile.count;
     }
 

@@ -8,6 +8,9 @@ const unsigned int att_limit = 4;
 const unsigned int stat_limit = 4;
 const unsigned int entity_limit = 64;
 const unsigned int character_limit = 6;
+const unsigned int animation_limit = 24;
+
+extern float massScale, massYOffset;
 
 enum STATUS
 {
@@ -33,11 +36,22 @@ enum IDENTIFICATION
     CH_COMMONER
 };
 
+enum ANIMATION_MAPPINGS
+{
+    ANIM_IDLE,
+    ANIM_WALK,
+    ANIM_ATTACK,
+    ANIM_HURT,
+    ANIM_DEAD,
+    ANIM_SPECIAL0 // continue with only specials, place hardcoded animations before the special animations (which are for custom scenarios)
+};
+
 struct character
 {
     attack abilities[att_limit];
     STATUS statuses[stat_limit];
-    float posX = 0.0f, posY = 0.0f, selectionSize = 4.0f;
+    animation animations[animation_limit];
+    float posX = 0.0f, posY = 0.0f, selectionSize = 12.0f;
     float walkToX = 0.0f, walkToY = 0.0f;
     sprite *visual = nullptr;
 
@@ -46,13 +60,16 @@ struct character
     float attackSpeed = 10.0f, attackTimer = attackSpeed, runSpeed = 120.0f;
     int hp = 10, maxHP = 10, dmg = 4;
 
+    bool animationFinished = true, animationLooping = false;
+    ANIMATION_MAPPINGS playingAnim = ANIM_IDLE;
+
     unsigned int initiative = 0;
 
     character() {}
     character(sprite *v, IDENTIFICATION _id) : visual(v)
     {
-        visual->rect.setTextureRect(sf::IntRect(0, 0, 16, 16));
-        visual->rect.setOrigin(sf::Vector2(8.0f, 16.0f));
+        visual->rect.setTextureRect(sf::IntRect(0, 0, visual->spriteW, visual->spriteH));
+        visual->rect.setOrigin(sf::Vector2(static_cast<float>(visual->spriteW) * 0.5f, static_cast<float>(visual->spriteH) * 0.5f));
         posX = visual->rect.getPosition().x;
         posY = visual->rect.getPosition().y;
         walkToX = posX;
@@ -66,6 +83,11 @@ struct character
         walkToY = _y;
     }
 
+    void takeHit(float delta_time)
+    {
+        PlayAnimation(ANIM_HURT, delta_time, false);
+    }
+
     void strikeTarget(float delta_time)
     {
         attackTimer -= 10.0f * delta_time;
@@ -74,6 +96,7 @@ struct character
         {
             attackTimer = attackSpeed;
             target->hp -= dmg;
+            target->takeHit(delta_time);
         }
     }
 
@@ -96,12 +119,14 @@ struct character
 
             float distance = xDist * xDist + yDist * yDist;
 
-            if (distance > 4000.0f || target->hp <= 0)
+            if (target->hp <= 0)
             {
                 target = nullptr;
             }
             if (distance < 400.0f)
             {
+                walkToX = posX;
+                walkToY = posY;
                 strikeTarget(delta_time);
             }
         }
@@ -124,7 +149,31 @@ struct character
             posY -= yWalkDist / normalizationCap * runSpeed * delta_time;
         }
 
+        if (animationFinished)
+        {
+            PlayAnimation(ANIM_IDLE, delta_time, true);
+        }
+
+        animations[playingAnim].run(delta_time, animationLooping, &animationFinished);
+
         visual->Put(posX, posY);
+
+        animationFinished = false;
+    }
+
+    void SetAnimation(ANIMATION_MAPPINGS id, unsigned int s, unsigned int e, float spd)
+    {
+        animations[id] = animation(visual, s, e, spd);
+    }
+    void PlayAnimation(ANIMATION_MAPPINGS id, float delta_time, bool loops)
+    {
+        if (animations[id]._sprite == nullptr)
+            return;
+
+        animations[id].frame = animations[id].start;
+        animations[id].timer = 10.0f;
+        playingAnim = id;
+        animationLooping = loops;
     }
 };
 
@@ -138,14 +187,20 @@ struct player
     character allies[character_limit];
     bool selected[character_limit];
 
-    void select(float mouseX, float mouseY)
+    void select(float minX, float minY, float maxX, float maxY)
     {
         for (int i = 0; i < character_limit; ++i)
         {
-            if (mouseX > allies[i].posX - allies[i].selectionSize && mouseX < allies[i].posX + allies[i].selectionSize &&
-                mouseY > allies[i].posY - allies[i].selectionSize && mouseY < allies[i].posY + allies[i].selectionSize)
+            if (minX < allies[i].posX / massScale &&
+                maxX > allies[i].posX / massScale &&
+                minY < allies[i].posY / massScale + massYOffset &&
+                maxY > allies[i].posY / massScale + massYOffset)
             {
                 selected[i] = true;
+            }
+            else
+            {
+                selected[i] = false;
             }
         }
     }
