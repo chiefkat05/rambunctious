@@ -77,6 +77,7 @@ game_state state = START_SCREEN;
 struct gui
 {
     std::vector<button> buttons;
+    std::vector<sprite> images;
     sprite background;
     animation menuBG;
     bool quit = false;
@@ -88,6 +89,10 @@ struct gui
 
         window->draw(background.rect);
 
+        for (int i = 0; i < images.size(); ++i)
+        {
+            window->draw(images[i].rect);
+        }
         for (int i = 0; i < buttons.size(); ++i)
         {
             window->draw(buttons[i].visual.rect);
@@ -109,6 +114,9 @@ void startGame()
     // stategui.screenInitialization();
 }
 void optionsTab()
+{
+}
+void characterMenu()
 {
 }
 void quitGame()

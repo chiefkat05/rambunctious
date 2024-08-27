@@ -116,7 +116,9 @@ CMakeFiles/main.dir/sources/main.cpp.o: /home/chiefkat/Documents/vscodeprojects/
   /usr/include/bits/stdint-intn.h \
   /usr/include/bits/stdint-least.h \
   /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -442,7 +444,9 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
   /usr/include/bits/stdint-intn.h \
   /usr/include/bits/stdint-least.h \
   /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -724,6 +728,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/c++/14.2.1/ext/type_traits.h:
 
+/usr/include/c++/14.2.1/ext/string_conversions.h:
+
+/usr/include/c++/14.2.1/ext/numeric_traits.h:
+
 /usr/include/c++/14.2.1/tuple:
 
 /usr/include/bits/timex.h:
@@ -866,10 +874,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/SFML/System/ThreadLocalPtr.hpp:
 
-/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include/stdint.h:
-
-/usr/include/bits/flt-eval-method.h:
-
 /usr/include/SFML/Graphics/Rect.inl:
 
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h:
@@ -885,12 +889,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/c++/14.2.1/tr1/poly_hermite.tcc:
 
 /usr/include/SFML/System/Err.hpp:
-
-/usr/include/features.h:
-
-/usr/include/bits/sched.h:
-
-/usr/include/bits/types/__FILE.h:
 
 /usr/include/SFML/Graphics/VertexBuffer.hpp:
 
@@ -936,6 +934,8 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/bits/pthreadtypes.h:
 
+/usr/include/bits/stdio.h:
+
 /usr/include/SFML/Window/Vulkan.hpp:
 
 /usr/include/c++/14.2.1/bits/stl_iterator_base_funcs.h:
@@ -963,6 +963,8 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/SFML/Graphics/Transformable.hpp:
 
 /usr/include/bits/locale.h:
+
+/usr/include/c++/14.2.1/cstddef:
 
 /usr/include/c++/14.2.1/bits/predefined_ops.h:
 
@@ -1002,6 +1004,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/SFML/Graphics/ConvexShape.hpp:
 
+/usr/include/c++/14.2.1/bits/vector.tcc:
+
+/usr/include/c++/14.2.1/bit:
+
 /usr/include/c++/14.2.1/bits/memoryfwd.h:
 
 /usr/include/c++/14.2.1/bits/requires_hosted.h:
@@ -1026,6 +1032,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/c++/14.2.1/bits/concept_check.h:
 
+/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include/stdint.h:
+
+/usr/include/bits/flt-eval-method.h:
+
 /usr/include/SFML/Graphics/Color.hpp:
 
 /usr/include/SFML/System.hpp:
@@ -1037,8 +1047,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/stdio.h:
 
 /usr/include/bits/wordsize.h:
-
-/usr/include/c++/14.2.1/ext/string_conversions.h:
 
 /usr/include/SFML/Graphics/Image.hpp:
 
@@ -1066,9 +1074,9 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/SFML/Window/Window.hpp:
 
-/usr/include/bits/types/FILE.h:
-
 /usr/include/SFML/Graphics/Text.hpp:
+
+/usr/include/bits/types/FILE.h:
 
 /usr/include/c++/14.2.1/cctype:
 
@@ -1079,6 +1087,12 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/bits/types/sigset_t.h:
 
 /usr/include/SFML/System/Time.hpp:
+
+/usr/include/features.h:
+
+/usr/include/bits/sched.h:
+
+/usr/include/bits/types/__FILE.h:
 
 /usr/include/c++/14.2.1/pstl/glue_algorithm_defs.h:
 
@@ -1169,6 +1183,8 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/SFML/System/InputStream.hpp:
 
 /usr/include/c++/14.2.1/bits/allocator.h:
+
+/usr/include/bits/stdlib-bsearch.h:
 
 /usr/include/c++/14.2.1/bits/basic_ios.tcc:
 
@@ -1288,12 +1304,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/c++/14.2.1/bits/utility.h:
 
-/usr/include/c++/14.2.1/bit:
-
-/usr/include/c++/14.2.1/bits/vector.tcc:
-
-/usr/include/c++/14.2.1/cstddef:
-
 /usr/include/c++/14.2.1/cerrno:
 
 /usr/include/c++/14.2.1/cstdio:
@@ -1315,5 +1325,3 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/c++/14.2.1/bits/functional_hash.h:
 
 /usr/include/c++/14.2.1/ext/alloc_traits.h:
-
-/usr/include/c++/14.2.1/ext/numeric_traits.h:

@@ -140,7 +140,7 @@ void mouseUpdate()
 
 int prevState = -1;
 // edit all guis here
-void menuData()
+void menuData(player &mainP)
 {
     if (state == prevState)
         return;
@@ -164,6 +164,15 @@ void menuData()
         break;
     case DUNGEON_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/dungeon.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
+
+        gui_data.images.push_back(sprite("../img/ui/dungeon_ui.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1));
+        for (int i = 0; i < character_limit; ++i)
+        {
+            if (mainP.allies[i].visual == nullptr)
+                continue;
+
+            gui_data.buttons.push_back(button("../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, characterMenu));
+        }
         break;
     default:
         break;
@@ -181,19 +190,24 @@ int main()
 
     window.setView(screen);
 
-    sprite violent("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 5, 4); // WHY IS HE TINY
+    sprite brawler("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 5, 4);
     sprite detective("../img/classes/violent/detective.png", 130.0f, 40.0f, 16.0f, 16.0f, 6, 1);
     sprite bloom("../img/classes/violent/bloom.png", 110.0f, 40.0f, 16.0f, 16.0f, 6, 1);
     sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, 16.0f, 16.0f, 1, 1);
 
+    ch_class violent(20, 8.0f, 60.0f, 200.0f, 150);
+    ch_class meg(2000, 14.5f, 120.0f, 400.0f, 40);
+    violent.abilities_list[0].dmg = 5;
+    meg.abilities_list[0].dmg = 15;
+
     room floor1("../img/tiles/walls/blue.png", "../img/tiles/floors/blue.png", massScale, massScale);
     player mainPlayer;
-    mainPlayer.allies[0] = character(&violent, CH_PLAYER);
-    mainPlayer.allies[1] = character(&detective, CH_PLAYER);
-    mainPlayer.allies[2] = character(&bloom, CH_PLAYER);
+    mainPlayer.allies[0] = character(&brawler, CH_PLAYER, violent);
+    mainPlayer.allies[1] = character(&detective, CH_PLAYER, violent);
+    mainPlayer.allies[2] = character(&bloom, CH_PLAYER, violent);
     mainPlayer.allies[2].hp = 100;
 
-    character e1(&megdrer, CH_MONSTER);
+    character e1(&megdrer, CH_MONSTER, meg);
 
     sf::Clock sfClock;
     sf::Time sfTime;
@@ -237,12 +251,16 @@ int main()
 
         mouseUpdate();
 
+        // next up is either animation code stuff, or, since I know you don't want to do that
+        // graphics and code for the leveling up mechanic
+        // just have it where killing grants that character xp and enough xp gives bonus dmg and hp
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             window.close();
 
         window.clear();
 
-        menuData();
+        menuData(mainPlayer);
         gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);
         if (state == DUNGEON_SCREEN)
         {

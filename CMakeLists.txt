@@ -11,3 +11,5 @@ endif()
 if (WIN32)
 target_link_libraries(main sfml-graphics sfml-window sfml-system opengl32)
 endif()
+
+set(CMAKE_CXX_FLAGS "-O2")

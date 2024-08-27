@@ -5,7 +5,8 @@
 #include "sprite.h"
 
 const unsigned int att_limit = 4;
-const unsigned int stat_limit = 4;
+const unsigned int class_att_limit = 52;
+const unsigned int stat_limit = 14;
 const unsigned int entity_limit = 64;
 const unsigned int character_limit = 6;
 const unsigned int animation_limit = 24;
@@ -23,6 +24,7 @@ enum STATUS
 
 struct attack
 {
+    int dmg;
     std::pair<STATUS, unsigned int> status_chances[stat_limit];
 };
 
@@ -46,9 +48,36 @@ enum ANIMATION_MAPPINGS
     ANIM_SPECIAL0 // continue with only specials, place hardcoded animations before the special animations (which are for custom scenarios)
 };
 
+struct ch_class
+{
+    attack abilities_list[class_att_limit];
+    STATUS permanent_status_list[stat_limit];
+
+    int maxHP;
+    float attackSpeed, runSpeed, attackRange;
+
+    float experienceToLvlUp;
+
+    ch_class()
+    {
+        maxHP = 10;
+        abilities_list[0].dmg = 5;
+        attackSpeed = 10.0f;
+        runSpeed = 100.0f;
+        attackRange = 100.0f;
+        experienceToLvlUp = 100;
+    }
+
+    ch_class(int _mhp, float _attspd, float _runspd, float _attrng, float _xpLvlUp)
+        : maxHP(_mhp), attackSpeed(_attspd),
+          runSpeed(_runspd), attackRange(_attrng),
+          experienceToLvlUp(_xpLvlUp) {}
+};
+
 struct character
 {
-    attack abilities[att_limit];
+    ch_class _class;
+
     STATUS statuses[stat_limit];
     animation animations[animation_limit];
     float posX = 0.0f, posY = 0.0f, selectionSize = 12.0f;
@@ -57,8 +86,8 @@ struct character
 
     character *target = nullptr;
     IDENTIFICATION id = CH_MONSTER;
-    float attackSpeed = 10.0f, attackTimer = attackSpeed, runSpeed = 120.0f;
-    int hp = 10, maxHP = 10, dmg = 4;
+    float attackTimer = 0.0f;
+    int hp = 10;
 
     bool animationFinished = true, animationLooping = false;
     ANIMATION_MAPPINGS playingAnim = ANIM_IDLE;
@@ -66,7 +95,7 @@ struct character
     unsigned int initiative = 0;
 
     character() {}
-    character(sprite *v, IDENTIFICATION _id) : visual(v)
+    character(sprite *v, IDENTIFICATION _id, ch_class cl) : visual(v)
     {
         visual->rect.setTextureRect(sf::IntRect(0, 0, visual->spriteW, visual->spriteH));
         visual->rect.setOrigin(sf::Vector2(static_cast<float>(visual->spriteW) * 0.5f, static_cast<float>(visual->spriteH) * 0.5f));
@@ -75,6 +104,14 @@ struct character
         walkToX = posX;
         walkToY = posY;
         id = _id;
+        _class = cl;
+    }
+
+    void LevelUp()
+    {
+        _class.maxHP *= 1.1f;
+        _class.attackSpeed /= 1.1f;
+        _class.experienceToLvlUp *= 1.5f;
     }
 
     void MoveTo(float _x, float _y)
@@ -94,8 +131,9 @@ struct character
 
         if (attackTimer < 0.0f)
         {
-            attackTimer = attackSpeed;
-            target->hp -= dmg;
+            std::cout << _class.abilities_list[0].dmg << ", " << _class.attackSpeed << ", " << target->hp << " ????\n"; // what the frick is happening with the class stats
+            attackTimer = _class.attackSpeed;
+            target->hp -= _class.abilities_list[0].dmg;
             target->takeHit(delta_time);
         }
     }
@@ -123,7 +161,7 @@ struct character
             {
                 target = nullptr;
             }
-            if (distance < 400.0f)
+            if (distance < _class.attackRange)
             {
                 walkToX = posX;
                 walkToY = posY;
@@ -136,17 +174,17 @@ struct character
 
         if (walkToX != posX && walkToY == posY)
         {
-            posX -= xWalkDist / std::abs(xWalkDist) * runSpeed * delta_time;
+            posX -= xWalkDist / std::abs(xWalkDist) * _class.runSpeed * delta_time;
         }
         if (walkToY != posY && walkToX == posX)
         {
-            posY -= yWalkDist / std::abs(yWalkDist) * runSpeed * delta_time;
+            posY -= yWalkDist / std::abs(yWalkDist) * _class.runSpeed * delta_time;
         }
         if (walkToX != posX && walkToY != posY)
         {
             float normalizationCap = std::max(std::abs(xWalkDist), std::abs(yWalkDist));
-            posX -= xWalkDist / normalizationCap * runSpeed * delta_time;
-            posY -= yWalkDist / normalizationCap * runSpeed * delta_time;
+            posX -= xWalkDist / normalizationCap * _class.runSpeed * delta_time;
+            posY -= yWalkDist / normalizationCap * _class.runSpeed * delta_time;
         }
 
         if (animationFinished)
