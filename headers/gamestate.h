@@ -16,9 +16,12 @@ struct button
 {
     sprite visual;
     float posX, posY, width, height;
-    void (*onPressed)();
 
-    button(sprite *v, float x, float y, float w, float h, void onP())
+    void (*onPressed)(int, player *);
+    int func_n;
+    player *func_p;
+
+    button(sprite *v, float x, float y, float w, float h, void onP(int, player *), int f_n = 0, player *f_p = nullptr)
     {
         posX = x;
         posY = y;
@@ -26,8 +29,10 @@ struct button
         height = h;
         visual = *v;
         onPressed = onP;
+        func_n = f_n;
+        func_p = f_p;
     }
-    button(const char *path, float x, float y, float w, float h, void onP())
+    button(const char *path, float x, float y, float w, float h, void onP(int, player *), int f_n = 0, player *f_p = nullptr)
     {
         posX = x;
         posY = y;
@@ -35,12 +40,14 @@ struct button
         height = h;
         visual = sprite(path, x, y, w, h, 1, 1);
         onPressed = onP;
+        func_n = f_n;
+        func_p = f_p;
     }
 
     void update(float mouseX, float mouseY, bool mousePressed, bool mouseReleased)
     {
         if (mouseX < posX / massScale || mouseX > posX / massScale + width / massScale ||
-            mouseY < posY / massScale + massYOffset || mouseY > posY / massScale + height / massScale + massYOffset)
+            mouseY < posY / massScale + massYOffset / massScale || mouseY > posY / massScale + height / massScale + massYOffset / massScale)
         {
             if (visual.rect.getColor().r < 255)
             {
@@ -59,7 +66,7 @@ struct button
 
         visual.rect.setColor(sf::Color(255, 255, 255, 255));
 
-        onPressed();
+        onPressed(func_n, func_p);
     }
 };
 
@@ -104,7 +111,7 @@ struct gui
 
 gui gui_data;
 
-void startGame()
+void startGame(int n, player *p)
 {
     if (state > CHARACTER_CREATION_SCREEN)
         return;
@@ -113,13 +120,14 @@ void startGame()
 
     // stategui.screenInitialization();
 }
-void optionsTab()
+void optionsTab(int n, player *p)
 {
 }
-void characterMenu()
+void characterMenu(int allySelected, player *player)
 {
+    player->selected[allySelected] = true;
 }
-void quitGame()
+void quitGame(int n, player *p)
 {
     gui_data.quit = true;
 }

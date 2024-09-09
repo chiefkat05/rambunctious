@@ -138,14 +138,8 @@ CMakeFiles/main.dir/sources/main.cpp.o: \
  /usr/include/c++/14.2.1/bits/stl_numeric.h \
  /usr/include/c++/14.2.1/pstl/glue_numeric_defs.h \
  /usr/include/c++/14.2.1/pstl/execution_defs.h \
- /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/sprite.h \
- /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/setup.h \
- /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
- /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
- /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
- /usr/include/SFML/System/Time.hpp /usr/include/SFML/System/Err.hpp \
- /usr/include/c++/14.2.1/ostream /usr/include/c++/14.2.1/ios \
- /usr/include/c++/14.2.1/exception \
+ /usr/include/c++/14.2.1/fstream /usr/include/c++/14.2.1/istream \
+ /usr/include/c++/14.2.1/ios /usr/include/c++/14.2.1/exception \
  /usr/include/c++/14.2.1/bits/exception_ptr.h \
  /usr/include/c++/14.2.1/bits/cxxabi_init_exception.h \
  /usr/include/c++/14.2.1/typeinfo \
@@ -178,7 +172,18 @@ CMakeFiles/main.dir/sources/main.cpp.o: \
  /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/ctype_inline.h \
  /usr/include/c++/14.2.1/bits/locale_facets.tcc \
  /usr/include/c++/14.2.1/bits/basic_ios.tcc \
- /usr/include/c++/14.2.1/bits/ostream.tcc \
+ /usr/include/c++/14.2.1/ostream /usr/include/c++/14.2.1/bits/ostream.tcc \
+ /usr/include/c++/14.2.1/bits/istream.tcc \
+ /usr/include/c++/14.2.1/bits/codecvt.h \
+ /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
+ /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
+ /usr/include/c++/14.2.1/bits/fstream.tcc \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/sprite.h \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/setup.h \
+ /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
+ /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
+ /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
+ /usr/include/SFML/System/Time.hpp /usr/include/SFML/System/Err.hpp \
  /usr/include/SFML/System/FileInputStream.hpp \
  /usr/include/SFML/System/InputStream.hpp \
  /usr/include/SFML/System/NonCopyable.hpp \
@@ -197,7 +202,7 @@ CMakeFiles/main.dir/sources/main.cpp.o: \
  /usr/include/c++/14.2.1/ctime \
  /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/time_members.h \
  /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/messages_members.h \
- /usr/include/libintl.h /usr/include/c++/14.2.1/bits/codecvt.h \
+ /usr/include/libintl.h \
  /usr/include/c++/14.2.1/bits/locale_facets_nonio.tcc \
  /usr/include/c++/14.2.1/bits/locale_conv.h \
  /usr/include/SFML/System/Utf.inl /usr/include/c++/14.2.1/iterator \
@@ -258,7 +263,8 @@ CMakeFiles/main.dir/sources/main.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /usr/include/c++/14.2.1/iostream /usr/include/c++/14.2.1/istream \
- /usr/include/c++/14.2.1/bits/istream.tcc \
+ /usr/include/c++/14.2.1/iostream \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/system.h \
- /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/gamestate.h
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/gamestate.h \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h

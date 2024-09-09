@@ -2,7 +2,9 @@
 #define SYSTEM_H
 
 #include <iostream>
+#include <string>
 #include "sprite.h"
+#include "collision.h"
 
 const unsigned int att_limit = 4;
 const unsigned int class_att_limit = 52;
@@ -50,6 +52,7 @@ enum ANIMATION_MAPPINGS
 
 struct ch_class
 {
+    std::string name;
     attack abilities_list[class_att_limit];
     STATUS permanent_status_list[stat_limit];
 
@@ -68,8 +71,8 @@ struct ch_class
         experienceToLvlUp = 100;
     }
 
-    ch_class(int _mhp, float _attspd, float _runspd, float _attrng, float _xpLvlUp)
-        : maxHP(_mhp), attackSpeed(_attspd),
+    ch_class(std::string _n, int _mhp, float _attspd, float _runspd, float _attrng, float _xpLvlUp)
+        : name(_n), maxHP(_mhp), attackSpeed(_attspd),
           runSpeed(_runspd), attackRange(_attrng),
           experienceToLvlUp(_xpLvlUp) {}
 };
@@ -77,12 +80,14 @@ struct ch_class
 struct character
 {
     ch_class _class;
+    float velocityX = 0.0f, velocityY = 0.0f;
 
     STATUS statuses[stat_limit];
     animation animations[animation_limit];
     float posX = 0.0f, posY = 0.0f, selectionSize = 12.0f;
     float walkToX = 0.0f, walkToY = 0.0f;
     sprite *visual = nullptr;
+    aabb collider;
 
     character *target = nullptr;
     IDENTIFICATION id = CH_MONSTER;
@@ -97,7 +102,7 @@ struct character
     character() {}
     character(sprite *v, IDENTIFICATION _id, ch_class cl) : visual(v)
     {
-        visual->rect.setTextureRect(sf::IntRect(0, 0, visual->spriteW, visual->spriteH));
+        visual->rect.setTextureRect(sf::IntRect(0, 0, visual->spriteW, visual->spriteH)); // the brawler origin is off-center because he's 32x32 for animation purposes
         visual->rect.setOrigin(sf::Vector2(static_cast<float>(visual->spriteW) * 0.5f, static_cast<float>(visual->spriteH) * 0.5f));
         posX = visual->rect.getPosition().x;
         posY = visual->rect.getPosition().y;
@@ -105,13 +110,17 @@ struct character
         walkToY = posY;
         id = _id;
         _class = cl;
-    }
+        hp = cl.maxHP;
+
+        collider = aabb(posX, posY, posX + 16.0f, posY + 8.0f);
+    } // pathfinding time also you can move everything into cpp files
 
     void LevelUp()
     {
         _class.maxHP *= 1.1f;
         _class.attackSpeed /= 1.1f;
         _class.experienceToLvlUp *= 1.5f;
+        hp = _class.maxHP;
     }
 
     void MoveTo(float _x, float _y)
@@ -131,19 +140,21 @@ struct character
 
         if (attackTimer < 0.0f)
         {
-            std::cout << _class.abilities_list[0].dmg << ", " << _class.attackSpeed << ", " << target->hp << " ????\n"; // what the frick is happening with the class stats
             attackTimer = _class.attackSpeed;
             target->hp -= _class.abilities_list[0].dmg;
             target->takeHit(delta_time);
         }
     }
 
-    void Update(float delta_time)
+    void Update(float delta_time, float screenOffsetX, float screenOffsetY)
     {
+        collider.moveCenterToPoint(posX, posY + 4.0f);
+
         if (hp <= 0)
         {
             visual->rect.setColor(sf::Color(50, 50, 50, 255));
             visual->rect.setRotation(90);
+            visual->Put(posX + screenOffsetX, posY + screenOffsetY);
             return;
         }
 
@@ -174,18 +185,23 @@ struct character
 
         if (walkToX != posX && walkToY == posY)
         {
-            posX -= xWalkDist / std::abs(xWalkDist) * _class.runSpeed * delta_time;
+            velocityX = -xWalkDist / std::abs(xWalkDist) * _class.runSpeed * delta_time;
         }
         if (walkToY != posY && walkToX == posX)
         {
-            posY -= yWalkDist / std::abs(yWalkDist) * _class.runSpeed * delta_time;
+            velocityY = -yWalkDist / std::abs(yWalkDist) * _class.runSpeed * delta_time;
         }
         if (walkToX != posX && walkToY != posY)
         {
             float normalizationCap = std::max(std::abs(xWalkDist), std::abs(yWalkDist));
-            posX -= xWalkDist / normalizationCap * _class.runSpeed * delta_time;
-            posY -= yWalkDist / normalizationCap * _class.runSpeed * delta_time;
+            velocityX = -xWalkDist / normalizationCap * _class.runSpeed * delta_time;
+            velocityY = -yWalkDist / normalizationCap * _class.runSpeed * delta_time;
         }
+
+        // if (std::abs(xWalkDist) < _class.runSpeed * delta_time * 1.2f) // find a good way to eliminate the overshoot (jittering)
+        //     posX = walkToX;
+        // if (std::abs(yWalkDist) < _class.runSpeed * delta_time * 1.2f)
+        //     posY = walkToY;
 
         if (animationFinished)
         {
@@ -194,9 +210,14 @@ struct character
 
         animations[playingAnim].run(delta_time, animationLooping, &animationFinished);
 
-        visual->Put(posX, posY);
+        visual->Put(posX + screenOffsetX, posY + screenOffsetY);
 
         animationFinished = false;
+    }
+    void updatePosition()
+    {
+        posX += velocityX;
+        posY += velocityY;
     }
 
     void SetAnimation(ANIMATION_MAPPINGS id, unsigned int s, unsigned int e, float spd)
@@ -235,22 +256,20 @@ struct player
                 maxY > allies[i].posY / massScale + massYOffset)
             {
                 selected[i] = true;
+                if (allies[i].visual != nullptr)
+                    allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 170));
             }
             else
             {
                 selected[i] = false;
+                if (allies[i].visual != nullptr)
+                    allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 255));
             }
         }
     }
 };
 
-struct quadtree
-{
-    unsigned int min, max;
-
-    quadtree *child;
-};
-
+// quadtree and collision stuff probably should go in game_system
 struct game_system
 {
     character *characters[entity_limit];
@@ -274,7 +293,7 @@ struct game_system
         ++characterCount;
     }
 
-    void update(float delta_time)
+    void update(dungeon &floor, float delta_time)
     {
         for (int i = 0; i < characterCount; ++i)
         {
@@ -337,8 +356,46 @@ struct game_system
                 //         unit.MoveTo(unit.posX - xDist / normalizationCap, unit.posY - yDist / normalizationCap);
                 // }
             }
+            characters[i]->Update(delta_time, floor.screenPositionX, floor.screenPositionY);
 
-            characters[i]->Update(delta_time);
+            for (int j = 0; j < floor.collision_box_count; ++j)
+            {
+                if (floor.collision_boxes[j].min_x == 0.0f &&
+                    floor.collision_boxes[j].min_y == 0.0f &&
+                    floor.collision_boxes[j].max_x == 0.0f &&
+                    floor.collision_boxes[j].max_y == 0.0f)
+                {
+                    continue;
+                }
+
+                float playerMoveSpeedX = characters[i]->_class.runSpeed;
+                if (characters[i]->walkToX < characters[i]->posX)
+                    playerMoveSpeedX = -characters[i]->_class.runSpeed;
+
+                float playerMoveSpeedY = characters[i]->_class.runSpeed;
+                if (characters[i]->walkToY < characters[i]->posY)
+                    playerMoveSpeedY = -characters[i]->_class.runSpeed;
+
+                if (characters[i]->walkToX == characters[i]->posX)
+                    playerMoveSpeedX = 0.0f;
+                if (characters[i]->walkToY == characters[i]->posY)
+                    playerMoveSpeedY = 0.0f;
+
+                float xNormal = 0.0f;
+
+                float firstCollisionHitTest = characters[i]->collider.response(playerMoveSpeedX * delta_time,
+                                                                               playerMoveSpeedY * delta_time, floor.collision_boxes[j], xNormal);
+
+                if (firstCollisionHitTest < 1.0f && xNormal == 1.0f)
+                {
+                    characters[i]->velocityX *= firstCollisionHitTest;
+                }
+                if (firstCollisionHitTest < 1.0f && xNormal == 0.0f)
+                {
+                    characters[i]->velocityY *= firstCollisionHitTest;
+                }
+            } // quadtree implementation is next
+            characters[i]->updatePosition();
         }
     }
 };

@@ -131,17 +131,8 @@ CMakeFiles/main.dir/sources/main.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_numeric.h \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/pstl/glue_numeric_defs.h \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/pstl/execution_defs.h \
- /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/sprite.h \
- /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/setup.h \
- /usr/x86_64-w64-mingw32/include/SFML/Graphics.hpp \
- /usr/x86_64-w64-mingw32/include/SFML/Window.hpp \
- /usr/x86_64-w64-mingw32/include/SFML/System.hpp \
- /usr/x86_64-w64-mingw32/include/SFML/Config.hpp \
- /usr/x86_64-w64-mingw32/include/SFML/System/Clock.hpp \
- /usr/x86_64-w64-mingw32/include/SFML/System/Export.hpp \
- /usr/x86_64-w64-mingw32/include/SFML/System/Time.hpp \
- /usr/x86_64-w64-mingw32/include/SFML/System/Err.hpp \
- /usr/x86_64-w64-mingw32/include/c++/13.1.0/ostream \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/fstream \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/istream \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/ios \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/exception \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/exception_ptr.h \
@@ -182,7 +173,23 @@ CMakeFiles/main.dir/sources/main.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/ctype_inline.h \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets.tcc \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/basic_ios.tcc \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/ostream \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/ostream.tcc \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/istream.tcc \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/codecvt.h \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/basic_file.h \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++io.h \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/fstream.tcc \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/sprite.h \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/setup.h \
+ /usr/x86_64-w64-mingw32/include/SFML/Graphics.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Window.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/System.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Config.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/System/Clock.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/System/Export.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/System/Time.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/System/Err.hpp \
  /usr/x86_64-w64-mingw32/include/SFML/System/FileInputStream.hpp \
  /usr/x86_64-w64-mingw32/include/SFML/System/InputStream.hpp \
  /usr/x86_64-w64-mingw32/include/SFML/System/NonCopyable.hpp \
@@ -203,7 +210,6 @@ CMakeFiles/main.dir/sources/main.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/ctime \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/time_members.h \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/messages_members.h \
- /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/codecvt.h \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets_nonio.tcc \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_conv.h \
  /usr/x86_64-w64-mingw32/include/SFML/System/Utf.inl \
@@ -275,7 +281,7 @@ CMakeFiles/main.dir/sources/main.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/SFML/Graphics/Text.hpp \
  /usr/x86_64-w64-mingw32/include/SFML/Graphics/VertexBuffer.hpp \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/iostream \
- /usr/x86_64-w64-mingw32/include/c++/13.1.0/istream \
- /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/istream.tcc \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/system.h \
- /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/gamestate.h
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/gamestate.h \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h

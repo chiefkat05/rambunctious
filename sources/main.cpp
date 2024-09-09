@@ -1,6 +1,7 @@
 #include "../headers/dungeon.h"
 #include "../headers/system.h"
 #include "../headers/gamestate.h"
+#include "../headers/collision.h"
 
 float mouseX, mouseY;
 bool mousePressed, mouseClicked, mouseReleased;
@@ -24,12 +25,12 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
         }
 
         boxMinX = mouseX;
-        boxMinY = mouseY - massYOffset;
+        boxMinY = mouseY - massYOffset / massScale;
     }
     if (mousePressed)
     {
         boxMaxX = mouseX;
-        boxMaxY = mouseY - massYOffset;
+        boxMaxY = mouseY - massYOffset / massScale;
         p.select(boxMinX, boxMinY, boxMaxX, boxMaxY);
 
         sTopLeft.Put(boxMinX * massScale, boxMinY * massScale);
@@ -103,7 +104,7 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
             if (targeted != nullptr)
             {
                 p.allies[i].target = targeted;
-                sAttack.Put(mouseX / massScale - 8.0f / massScale, mouseY / massScale - 16.0f / massScale + massYOffset);
+                sAttack.Put(mouseX * massScale - 8.0f, mouseY * massScale - 16.0f + massYOffset * massScale);
                 window.draw(sAttack.rect);
             }
             else
@@ -147,23 +148,28 @@ void menuData(player &mainP)
 
     gui_data.buttons.clear();
 
+    std::string temp_path;
     switch (state)
     {
     case START_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/start.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
+        gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
         gui_data.buttons.push_back(button("../img/ui/buttons/start.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
         break;
     case MENU_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/menu.png", 0.0f, 0.0f, 256.0f, 128.0f, 3, 1);
+        gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
         gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
         gui_data.buttons.push_back(button("../img/ui/buttons/quit.png", 80.0f, 40.0f, 16.0f, 16.0f, quitGame));
         break;
     case CHARACTER_CREATION_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/character.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
-        gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 210.0f, 110.0f, 16.0f, 16.0f, startGame));
+        gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
+        gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
         break;
     case DUNGEON_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/dungeon.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
+        gui_data.background.rect.setColor(sf::Color(255, 255, 255, 0));
 
         gui_data.images.push_back(sprite("../img/ui/dungeon_ui.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1));
         for (int i = 0; i < character_limit; ++i)
@@ -171,7 +177,11 @@ void menuData(player &mainP)
             if (mainP.allies[i].visual == nullptr)
                 continue;
 
-            gui_data.buttons.push_back(button("../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, characterMenu));
+            temp_path = std::string("../img/ui/icons/" + mainP.allies[i]._class.name + ".png");
+
+            gui_data.images.push_back(sprite(temp_path.c_str(), 225.0f, 6.0f + i * 20.0f, 12.0f, 14.0f, 1, 1));
+
+            gui_data.buttons.push_back(button("../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, characterMenu, i, &mainP));
         }
         break;
     default:
@@ -195,17 +205,17 @@ int main()
     sprite bloom("../img/classes/violent/bloom.png", 110.0f, 40.0f, 16.0f, 16.0f, 6, 1);
     sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, 16.0f, 16.0f, 1, 1);
 
-    ch_class violent(20, 8.0f, 60.0f, 200.0f, 150);
-    ch_class meg(2000, 14.5f, 120.0f, 400.0f, 40);
-    violent.abilities_list[0].dmg = 5;
-    meg.abilities_list[0].dmg = 15;
+    ch_class brawler_class("brawler", 20, 8.0f, 60.0f, 200.0f, 150);
+    ch_class detective_class("detective", 10, 16.0f, 90.0f, 700.0f, 200);
+    ch_class bloom_class("bloom", 15, 10.0f, 80.0f, 300.0f, 150);
+    ch_class meg("megdrer", 0, 14.5f, 120.0f, 400.0f, 40);
 
-    room floor1("../img/tiles/walls/blue.png", "../img/tiles/floors/blue.png", massScale, massScale);
+    dungeon floor1("../img/tiles/dungeons/blue/blue.png", 64.0f, 64.0f, massScale, massYOffset);
+    floor1.readRoomFile("../dungeons/blue.sdf", massScale, massYOffset);
     player mainPlayer;
-    mainPlayer.allies[0] = character(&brawler, CH_PLAYER, violent);
-    mainPlayer.allies[1] = character(&detective, CH_PLAYER, violent);
-    mainPlayer.allies[2] = character(&bloom, CH_PLAYER, violent);
-    mainPlayer.allies[2].hp = 100;
+    mainPlayer.allies[0] = character(&brawler, CH_PLAYER, brawler_class);
+    mainPlayer.allies[1] = character(&detective, CH_PLAYER, detective_class);
+    mainPlayer.allies[2] = character(&bloom, CH_PLAYER, bloom_class);
 
     character e1(&megdrer, CH_MONSTER, meg);
 
@@ -221,6 +231,9 @@ int main()
     game_system game;
     game.Add(&mainPlayer);
     game.Add(&e1);
+
+    sprite resolutionBlinderTop("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
+    sprite resolutionBlinderBottom("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
 
     while (window.isOpen())
     {
@@ -243,7 +256,7 @@ int main()
             {
                 float ratio = static_cast<float>(window.getSize().x) / static_cast<float>(window.getSize().y);
                 massScale = 256.0f / static_cast<float>(window.getSize().x);
-                massYOffset = (1 - ratio * 0.5f) * static_cast<float>(window.getSize().x * 0.32f);
+                massYOffset = (1 - ratio * 0.5f) * static_cast<float>(window.getSize().y * massScale * 0.5f);
                 screen.setSize(256.0f, 256.0f / ratio);
                 window.setView(screen);
             }
@@ -261,33 +274,31 @@ int main()
         window.clear();
 
         menuData(mainPlayer);
-        gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);
         if (state == DUNGEON_SCREEN)
         {
-            unitControl(game, mainPlayer, window);
+            floor1.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
 
             floor1.draw(&window);
-            game.update(delta_time);
+            game.update(floor1, delta_time);
+            unitControl(game, mainPlayer, window);
 
-            for (int i = 0; i < character_limit; ++i)
+            for (int i = 0; i < game.characterCount; ++i)
             {
-                if (mainPlayer.allies[i].visual == nullptr)
+                if (game.characters[i]->visual == nullptr)
                 {
                     continue;
                 }
-                window.draw(mainPlayer.allies[i].visual->rect);
-
-                if (!mainPlayer.selected[i])
-                {
-                    if (mainPlayer.allies[i].visual != nullptr)
-                        mainPlayer.allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 255));
-                    continue;
-                }
-                mainPlayer.allies[i].visual->rect.setColor(sf::Color(100, 100, 100, 100 + sin(current_time * 3.0f) * 70.0f));
+                window.draw(game.characters[i]->visual->rect);
             }
-
-            window.draw(e1.visual->rect);
         }
+        gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);
+
+        resolutionBlinderTop.Put(0.0f, -massYOffset / massScale);
+        resolutionBlinderTop.rect.setScale(256.0f, massYOffset / massScale / resolutionBlinderTop.spriteH);
+        window.draw(resolutionBlinderTop.rect);
+        resolutionBlinderBottom.Put(0.0f, 128.0f);
+        resolutionBlinderBottom.rect.setScale(256.0f, massYOffset * massScale);
+        window.draw(resolutionBlinderBottom.rect);
 
         window.display();
     }
