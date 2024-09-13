@@ -6,8 +6,9 @@
 float mouseX, mouseY;
 bool mousePressed, mouseClicked, mouseReleased;
 float massScale = 1.0f, massYOffset = 0.0f;
+float delta_time = 0.0f;
 
-void unitControl(game_system &game, player &p, sf::RenderWindow &window)
+void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon *floor)
 {
     static sprite sTopLeft("../img/ui/unit-control/playerselect-c.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
     static sprite sTopRight("../img/ui/unit-control/playerselect-c-h.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
@@ -15,7 +16,7 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
     static sprite sBottomRight("../img/ui/unit-control/playerselect-c-vh.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
     static sprite sMove("../img/ui/unit-control/playertarget-move.png", 0.0f, 0.0f, 16.0f, 16.0f, 1, 1);
     static sprite sAttack("../img/ui/unit-control/playertarget-attack.png", 0.0f, 0.0f, 16.0f, 16.0f, 1, 1);
-    static float boxMinX, boxMinY, boxMaxX, boxMaxY;
+    static float boxClickX, boxClickY, boxMinX, boxMinY, boxMaxX, boxMaxY;
 
     if (mouseClicked)
     {
@@ -24,14 +25,39 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
             p.selected[i] = false;
         }
 
+        boxClickX = mouseX;
+        boxClickY = mouseY - massYOffset / massScale;
         boxMinX = mouseX;
         boxMinY = mouseY - massYOffset / massScale;
     }
     if (mousePressed)
     {
-        boxMaxX = mouseX;
-        boxMaxY = mouseY - massYOffset / massScale;
-        p.select(boxMinX, boxMinY, boxMaxX, boxMaxY);
+        boxClickX -= floor->screenChangeDistanceX / massScale;
+        boxClickY -= floor->screenChangeDistanceY / massScale;
+
+        if (mouseX > boxClickX)
+        {
+            boxMaxX = mouseX;
+            boxMinX = boxClickX;
+        }
+        if (mouseX <= boxClickX)
+        {
+            boxMinX = mouseX;
+            boxMaxX = boxClickX;
+        }
+        if (mouseY > boxClickY)
+        {
+            boxMaxY = mouseY - massYOffset / massScale;
+            boxMinY = boxClickY;
+        }
+        if (mouseY <= boxClickY)
+        {
+            boxMinY = mouseY - massYOffset / massScale;
+            boxMaxY = boxClickY;
+        }
+
+        p.select(boxMinX - floor->screenPositionX / massScale, boxMinY - floor->screenPositionY / massScale - massYOffset / massScale,
+                 boxMaxX - floor->screenPositionX / massScale, boxMaxY - floor->screenPositionY / massScale - massYOffset / massScale);
 
         sTopLeft.Put(boxMinX * massScale, boxMinY * massScale);
         window.draw(sTopLeft.rect);
@@ -41,7 +67,27 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
         window.draw(sBottomLeft.rect);
         sBottomRight.Put(boxMaxX * massScale - 8.0f, boxMaxY * massScale - 8.0f);
         window.draw(sBottomRight.rect);
-    }
+    } // selector box also needs to be changed with screen offset
+    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    // {
+    //     for (int i = 0; i < character_limit; ++i)
+    //     {
+    //         if (!p.selected[i] || p.allies[i].visual == nullptr)
+    //             continue;
+
+    //         // p.allies[i].posX -= p.allies[i]._class.runSpeed * delta_time;
+    //         // p.allies[i].walkToX = p.allies[i].posX; // why does this have strange results
+    //         p.allies[i].target = nullptr;
+    //         p.allies[i].MoveTo(p.allies[i].posX - 5.0f * massScale, p.allies[i].posY);
+
+    //         // Options:
+
+    //         // Fix bugs, add keyboard walk feature
+    //         // Draw concepts, update a character to 32 bit and do simple animations for all actions
+    //         // Design intro with one starter character and make music track for it
+    //         // Implement sfml audio support
+    //     }
+    // }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
     {
         int selectedCount = 0;
@@ -72,7 +118,7 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
             if (mouseX > game.characters[i]->posX / massScale - game.characters[i]->selectionSize / massScale &&
                 mouseX < game.characters[i]->posX / massScale + game.characters[i]->selectionSize / massScale &&
                 mouseY > game.characters[i]->posY / massScale + massYOffset - game.characters[i]->selectionSize / massScale &&
-                mouseY < game.characters[i]->posY / massScale + massYOffset + game.characters[i]->selectionSize / massScale)
+                mouseY < game.characters[i]->posY / massScale + massYOffset + game.characters[i]->selectionSize / massScale && game.characters[i]->hp > 0)
             {
                 targeted = game.characters[i];
                 break;
@@ -100,10 +146,11 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
             float offsetY = p.allies[i].posY - averageY;
 
             p.allies[i].MoveTo(mouseX * massScale + offsetX,
-                               mouseY * massScale + offsetY - massYOffset * massScale);
+                               mouseY * massScale + offsetY - massYOffset * massScale, floor);
+
+            p.allies[i].target = targeted;
             if (targeted != nullptr)
             {
-                p.allies[i].target = targeted;
                 sAttack.Put(mouseX * massScale - 8.0f, mouseY * massScale - 16.0f + massYOffset * massScale);
                 window.draw(sAttack.rect);
             }
@@ -117,7 +164,6 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window)
 }
 
 float current_time = 0.0f;
-float delta_time = 0.0f;
 float previous_time = 0.0f;
 
 void mouseUpdate()
@@ -141,7 +187,7 @@ void mouseUpdate()
 
 int prevState = -1;
 // edit all guis here
-void menuData(player &mainP)
+void menuData(player &mainP, dungeon &floor)
 {
     if (state == prevState)
         return;
@@ -177,6 +223,11 @@ void menuData(player &mainP)
             if (mainP.allies[i].visual == nullptr)
                 continue;
 
+            mainP.allies[i].posX = floor.spawnLocationX;
+            mainP.allies[i].posY = floor.spawnLocationY + i * 16.0f;
+            mainP.allies[i].walkToX = floor.spawnLocationX;
+            mainP.allies[i].walkToY = floor.spawnLocationY + i * 16.0f; // plan - arrow keys move selected units
+
             temp_path = std::string("../img/ui/icons/" + mainP.allies[i]._class.name + ".png");
 
             gui_data.images.push_back(sprite(temp_path.c_str(), 225.0f, 6.0f + i * 20.0f, 12.0f, 14.0f, 1, 1));
@@ -210,8 +261,8 @@ int main()
     ch_class bloom_class("bloom", 15, 10.0f, 80.0f, 300.0f, 150);
     ch_class meg("megdrer", 0, 14.5f, 120.0f, 400.0f, 40);
 
-    dungeon floor1("../img/tiles/dungeons/blue/blue.png", 64.0f, 64.0f, massScale, massYOffset);
-    floor1.readRoomFile("../dungeons/blue.sdf", massScale, massYOffset);
+    dungeon currentDungeon("../img/tiles/dungeons/blue/blue.png", 64.0f, 64.0f, massScale, massYOffset);
+    currentDungeon.readRoomFile("../dungeons/blue.sdf", massScale, massYOffset);
     player mainPlayer;
     mainPlayer.allies[0] = character(&brawler, CH_PLAYER, brawler_class);
     mainPlayer.allies[1] = character(&detective, CH_PLAYER, detective_class);
@@ -273,14 +324,14 @@ int main()
 
         window.clear();
 
-        menuData(mainPlayer);
+        menuData(mainPlayer, currentDungeon);
         if (state == DUNGEON_SCREEN)
         {
-            floor1.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
+            currentDungeon.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
 
-            floor1.draw(&window);
-            game.update(floor1, delta_time);
-            unitControl(game, mainPlayer, window);
+            currentDungeon.draw(&window);
+            game.update(currentDungeon, delta_time);
+            unitControl(game, mainPlayer, window, &currentDungeon);
 
             for (int i = 0; i < game.characterCount; ++i)
             {

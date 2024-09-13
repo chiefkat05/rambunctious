@@ -19,11 +19,12 @@ struct dungeon
     sprite tiles[width_limit][height_limit];
     unsigned int roomWidth = 0, roomHeight = 0;
     unsigned int tileSpriteX, tileSpriteY;
+    float spawnLocationX = 0.0f, spawnLocationY = 0.0f;
 
     aabb collision_boxes[collision_box_limit];
     unsigned int collision_box_count = 0;
 
-    float screenPositionX = 0.0f, screenPositionY = 0.0f, lastScreenPosX = 0.0f, lastScreenPosY = 0.0f;
+    float screenPositionX = 0.0f, screenPositionY = 0.0f, lastScreenPosX = 0.0f, lastScreenPosY = 0.0f, screenChangeDistanceX, screenChangeDistanceY;
 
     dungeon(const char *tileSetPath, const unsigned int xSize, const unsigned int ySize, float massScale, float massYOffset)
     {
@@ -91,6 +92,9 @@ struct dungeon
             }
         }
 
+        screenChangeDistanceX = lastScreenPosX - screenPositionX;
+        screenChangeDistanceY = lastScreenPosY - screenPositionY;
+
         lastScreenPosX = screenPositionX;
         lastScreenPosY = screenPositionY;
     }
@@ -139,6 +143,10 @@ struct dungeon
                                                                 tiles[i][roomHeight].rect.getPosition().y + 16.0f);
                     ++collision_box_count;
                     break;
+                case 's':
+                    tiles[i][roomHeight].rect.setTextureRect(sf::IntRect(0, 0, 16, 16));
+                    spawnLocationX = tiles[i][roomHeight].rect.getPosition().x;
+                    spawnLocationY = tiles[i][roomHeight].rect.getPosition().y;
                 default:
                     tiles[i][roomHeight].rect.setTextureRect(sf::IntRect(0, 0, 16, 16));
                     break;

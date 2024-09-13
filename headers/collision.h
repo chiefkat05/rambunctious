@@ -47,7 +47,7 @@ struct aabb
         if (yVelocity < 0.0f)
             yEntry = (min_y - test.max_y) / yVelocity;
         if (yVelocity > 0.0f)
-            yEntry = (test.min_y - max_y) / yVelocity;
+            yEntry = (test.min_y - max_y) / yVelocity; // Add a camera lock-on to units at game start! Concept some more! Plan next move! Don't waste time because you can't figure out what to do next! Put on some smooth jazz!!!
 
         if (std::abs(xEntry) < std::abs(yEntry))
             xNormal = 1.0f;

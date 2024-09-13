@@ -123,8 +123,14 @@ struct character
         hp = _class.maxHP;
     }
 
-    void MoveTo(float _x, float _y)
+    void MoveTo(float _x, float _y, dungeon *currentDungeon)
     {
+        if (currentDungeon != nullptr)
+        {
+            _x -= currentDungeon->screenPositionX;
+            _y -= currentDungeon->screenPositionY;
+        }
+
         walkToX = _x;
         walkToY = _y;
     }
