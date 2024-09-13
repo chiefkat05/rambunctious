@@ -67,27 +67,57 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
         window.draw(sBottomLeft.rect);
         sBottomRight.Put(boxMaxX * massScale - 8.0f, boxMaxY * massScale - 8.0f);
         window.draw(sBottomRight.rect);
-    } // selector box also needs to be changed with screen offset
-    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    // {
-    //     for (int i = 0; i < character_limit; ++i)
-    //     {
-    //         if (!p.selected[i] || p.allies[i].visual == nullptr)
-    //             continue;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        for (int i = 0; i < character_limit; ++i)
+        {
+            if (!p.selected[i] || p.allies[i].visual == nullptr)
+                continue;
 
-    //         // p.allies[i].posX -= p.allies[i]._class.runSpeed * delta_time;
-    //         // p.allies[i].walkToX = p.allies[i].posX; // why does this have strange results
-    //         p.allies[i].target = nullptr;
-    //         p.allies[i].MoveTo(p.allies[i].posX - 5.0f * massScale, p.allies[i].posY);
+            p.allies[i].target = nullptr;
+            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x - 1.0f * massScale, p.allies[i].visual->rect.getPosition().y, floor);
 
-    //         // Options:
+            // Options:
 
-    //         // Fix bugs, add keyboard walk feature
-    //         // Draw concepts, update a character to 32 bit and do simple animations for all actions
-    //         // Design intro with one starter character and make music track for it
-    //         // Implement sfml audio support
-    //     }
-    // }
+            // Draw concepts, update a character to 32 bit and do simple animations for all actions
+            // Design intro with one starter character and make music track for it
+            // Implement sfml audio support
+        }
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        for (int i = 0; i < character_limit; ++i)
+        {
+            if (!p.selected[i] || p.allies[i].visual == nullptr)
+                continue;
+
+            p.allies[i].target = nullptr;
+            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x + 1.0f * massScale, p.allies[i].visual->rect.getPosition().y, floor);
+        }
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        for (int i = 0; i < character_limit; ++i)
+        {
+            if (!p.selected[i] || p.allies[i].visual == nullptr)
+                continue;
+
+            p.allies[i].target = nullptr;
+            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x, p.allies[i].visual->rect.getPosition().y - 1.0f * massScale, floor);
+        }
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        for (int i = 0; i < character_limit; ++i)
+        {
+            if (!p.selected[i] || p.allies[i].visual == nullptr)
+                continue;
+
+            p.allies[i].target = nullptr;
+            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x, p.allies[i].visual->rect.getPosition().y + 1.0f * massScale, floor);
+        }
+    }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
     {
         int selectedCount = 0;
