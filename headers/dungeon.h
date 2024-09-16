@@ -35,8 +35,8 @@ struct dungeon
                 tiles[x][y] = sprite(tileSetPath, static_cast<float>(x), static_cast<float>(y), xSize * massScale, ySize * massScale, 1, 1);
                 tiles[x][y].Put(static_cast<float>(x) * tiles[x][y].spriteW, static_cast<float>(y) * tiles[x][y].spriteH);
             }
-        }
-    }
+        } // the pointer to the ui_element's visual object is incorrect inside the element's update function
+    } // also do some lmms pls
 
     // void generateWallCollisions()
     // {

@@ -80,6 +80,7 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
 
             // Options:
 
+            // Width and Height indicators on selection box???
             // Draw concepts, update a character to 32 bit and do simple animations for all actions
             // Design intro with one starter character and make music track for it
             // Implement sfml audio support
@@ -124,11 +125,8 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
         float averageX = 0, averageY = 0;
         character *targeted = nullptr;
 
-        for (int i = 0; i < entity_limit; ++i)
+        for (int i = 0; i < game.characterCount; ++i)
         {
-            if (i > game.characterCount)
-                break;
-
             if (game.characters[i] == nullptr)
                 continue;
 
@@ -222,7 +220,7 @@ void menuData(player &mainP, dungeon &floor)
     if (state == prevState)
         return;
 
-    gui_data.buttons.clear();
+    gui_data.elements.clear();
 
     std::string temp_path;
     switch (state)
@@ -230,39 +228,41 @@ void menuData(player &mainP, dungeon &floor)
     case START_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/start.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
         gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
-        gui_data.buttons.push_back(button("../img/ui/buttons/start.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
+        gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/buttons/start.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
         break;
     case MENU_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/menu.png", 0.0f, 0.0f, 256.0f, 128.0f, 3, 1);
         gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
-        gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
-        gui_data.buttons.push_back(button("../img/ui/buttons/quit.png", 80.0f, 40.0f, 16.0f, 16.0f, quitGame));
+        gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
+        gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/buttons/quit.png", 80.0f, 40.0f, 16.0f, 16.0f, quitGame));
         break;
     case CHARACTER_CREATION_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/character.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
         gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
-        gui_data.buttons.push_back(button("../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
+        gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, startGame));
         break;
     case DUNGEON_SCREEN:
         gui_data.background = sprite("../img/ui/backgrounds/dungeon.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
         gui_data.background.rect.setColor(sf::Color(255, 255, 255, 0));
 
-        gui_data.images.push_back(sprite("../img/ui/dungeon_ui.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1));
+        gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/dungeon_ui.png", 0.0f, 0.0f, 256.0f, 128.0f, nullFunc));
         for (int i = 0; i < character_limit; ++i)
         {
             if (mainP.allies[i].visual == nullptr)
                 continue;
 
             mainP.allies[i].posX = floor.spawnLocationX;
-            mainP.allies[i].posY = floor.spawnLocationY + i * 16.0f;
+            mainP.allies[i].posY = floor.spawnLocationY + i * 16.0f; // images and buttons combine into one ui object with one update function!!!
             mainP.allies[i].walkToX = floor.spawnLocationX;
-            mainP.allies[i].walkToY = floor.spawnLocationY + i * 16.0f; // plan - arrow keys move selected units
+            mainP.allies[i].walkToY = floor.spawnLocationY + i * 16.0f;
 
             temp_path = std::string("../img/ui/icons/" + mainP.allies[i]._class.name + ".png");
 
-            gui_data.images.push_back(sprite(temp_path.c_str(), 225.0f, 6.0f + i * 20.0f, 12.0f, 14.0f, 1, 1));
+            gui_data.elements.push_back(ui_element(UI_IMAGE, temp_path.c_str(), 225.0f, 6.0f + i * 20.0f, 12.0f, 14.0f, nullFunc));
 
-            gui_data.buttons.push_back(button("../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, characterMenu, i, &mainP));
+            gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, characterMenu, i, &mainP));
+
+            gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", 225.0f, 6.0f + i * 20.0f, 16.0f, 4.0f, nullFunc, 0, nullptr, &mainP.allies[i].hp));
         }
         break;
     default:
@@ -286,10 +286,10 @@ int main()
     sprite bloom("../img/classes/violent/bloom.png", 110.0f, 40.0f, 16.0f, 16.0f, 6, 1);
     sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, 16.0f, 16.0f, 1, 1);
 
-    ch_class brawler_class("brawler", 20, 8.0f, 60.0f, 200.0f, 150);
-    ch_class detective_class("detective", 10, 16.0f, 90.0f, 700.0f, 200);
-    ch_class bloom_class("bloom", 15, 10.0f, 80.0f, 300.0f, 150);
-    ch_class meg("megdrer", 0, 14.5f, 120.0f, 400.0f, 40);
+    ch_class brawler_class("brawler", 20, 7, 8.0f, 60.0f, 200.0f, 150);
+    ch_class detective_class("detective", 10, 12, 16.0f, 90.0f, 700.0f, 200);
+    ch_class bloom_class("bloom", 15, 4, 2.0f, 80.0f, 300.0f, 150);
+    ch_class meg("megdrer", 140, 2, 14.5f, 120.0f, 400.0f, 40);
 
     dungeon currentDungeon("../img/tiles/dungeons/blue/blue.png", 64.0f, 64.0f, massScale, massYOffset);
     currentDungeon.readRoomFile("../dungeons/blue.sdf", massScale, massYOffset);
@@ -305,6 +305,7 @@ int main()
 
     mainPlayer.allies[0].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
     mainPlayer.allies[0].SetAnimation(ANIM_HURT, 5, 7, 150.0f);
+    mainPlayer.allies[0].SetAnimation(ANIM_ATTACK, 7, 19, 150.0f);
     mainPlayer.allies[1].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
     mainPlayer.allies[2].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
     e1.SetAnimation(ANIM_IDLE, 0, 0, 150.0f);
@@ -357,6 +358,7 @@ int main()
         menuData(mainPlayer, currentDungeon);
         if (state == DUNGEON_SCREEN)
         {
+            // std::cout << mainPlayer.allies[0].hp << ", " << mainPlayer.allies[0].visual->path << " huh\n";
             currentDungeon.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
 
             currentDungeon.draw(&window);

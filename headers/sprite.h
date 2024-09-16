@@ -67,13 +67,21 @@ struct animation
                 timer = 10.0f;
 
                 frame >= end ? frame = end : ++frame;
-                *finishedBool = true;
+                if (finishedBool != nullptr)
+                    *finishedBool = true;
             } // pls fix window size thing and animation frames needing to be always x-oriented.
             // ( I know it's not a big deal but if you do this now you can just copy the code in the future when you don't want to deal with this next time :) )
-        }
+        } //             ^^ I think it's already done ?
 
         timer -= speed * delta_time;
 
+        std::cout << _sprite << ", " << " before\n";
+        std::cout << _sprite->path << " hmm\n";
+        if (_sprite == nullptr)
+        {
+            std::cout << "error: animation not attached to a sprite!\n";
+            return;
+        }
         _sprite->rect.setTextureRect(sf::IntRect(frame % _sprite->framesX * _sprite->spriteW, frame / _sprite->framesX * _sprite->spriteH, _sprite->spriteW, _sprite->spriteH));
     }
 };

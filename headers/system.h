@@ -64,17 +64,17 @@ struct ch_class
     ch_class()
     {
         maxHP = 10;
-        abilities_list[0].dmg = 5;
+        abilities_list[0].dmg = 10;
         attackSpeed = 10.0f;
         runSpeed = 100.0f;
         attackRange = 100.0f;
         experienceToLvlUp = 100;
     }
 
-    ch_class(std::string _n, int _mhp, float _attspd, float _runspd, float _attrng, float _xpLvlUp)
+    ch_class(std::string _n, int _mhp, int _attdmg, float _attspd, float _runspd, float _attrng, float _xpLvlUp)
         : name(_n), maxHP(_mhp), attackSpeed(_attspd),
           runSpeed(_runspd), attackRange(_attrng),
-          experienceToLvlUp(_xpLvlUp) {}
+          experienceToLvlUp(_xpLvlUp) { abilities_list[0].dmg = _attdmg; }
 };
 
 struct character
@@ -148,6 +148,8 @@ struct character
         {
             attackTimer = _class.attackSpeed;
             target->hp -= _class.abilities_list[0].dmg;
+            std::cout << "huh\n";
+            std::cout << visual->path << ", " << _class.abilities_list[0].dmg;
             target->takeHit(delta_time);
         }
     }
@@ -166,11 +168,11 @@ struct character
 
         if (target != nullptr)
         {
-            walkToX = target->posX;
-            walkToY = target->posY;
+            walkToX = target->visual->rect.getPosition().x;
+            walkToY = target->visual->rect.getPosition().y;
 
-            float xDist = posX - target->posX;
-            float yDist = posY - target->posY;
+            float xDist = posX - target->visual->rect.getPosition().x;
+            float yDist = posY - target->visual->rect.getPosition().y;
 
             float distance = xDist * xDist + yDist * yDist;
 
@@ -180,8 +182,7 @@ struct character
             }
             if (distance < _class.attackRange)
             {
-                walkToX = posX;
-                walkToY = posY;
+                PlayAnimation(ANIM_ATTACK, delta_time, false);
                 strikeTarget(delta_time);
             }
         }
