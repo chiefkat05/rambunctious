@@ -11,6 +11,7 @@ void quitGame();
 sf::RenderWindow *win;
 
 extern float massScale, massYOffset;
+extern bool buttonHovered;
 
 enum ui_element_type
 {
@@ -24,15 +25,16 @@ struct ui_element
     float posX, posY, width, height;
     int *value;
 
-    void (*function)(int, player *);
-    int func_n;
+    void (*function)(player *, dungeon *, int);
     player *func_p;
+    dungeon *func_d;
+    int func_i;
 
     ui_element_type utype;
     animation anim;
 
-    ui_element(ui_element_type t, sprite *v, float x, float y, float w, float h, void func(int, player *), int f_n = 0,
-               player *f_p = nullptr, int *_linkValue = nullptr)
+    ui_element(ui_element_type t, sprite *v, float x, float y, float w, float h, void func(player *, dungeon *, int), player *_func_p = nullptr, dungeon *_func_d = nullptr,
+               int _func_i = 0, int *_linkValue = nullptr)
         : visual(*v), anim(&visual, 0, visual.framesX * visual.framesY, 1.0f)
     {
         utype = t;
@@ -41,13 +43,15 @@ struct ui_element
         width = w;
         height = h;
         function = func;
-        func_n = f_n;
-        func_p = f_p;
+        func_p = _func_p;
+        func_d = _func_d;
+        func_i = _func_i;
         value = _linkValue;
     }
-    ui_element(ui_element_type t, const char *path, float x, float y, float w, float h, void func(int, player *), int f_n = 0,
-               player *f_p = nullptr, int *_linkValue = nullptr)
-        : visual(path, x, y, w, h, 1, 1), anim(&visual, 0, visual.framesX * visual.framesY, 1.0f)
+    ui_element(ui_element_type t, const char *path, float x, float y, float w, float h, int frX, int frY, void func(player *, dungeon *, int),
+               player *_func_p = nullptr, dungeon *_func_d = nullptr,
+               int _func_i = 0, int *_linkValue = nullptr)
+        : visual(path, x, y, w, h, frX, frY), anim(&visual, 0, visual.framesX * visual.framesY, 1.0f)
     {
         utype = t;
         posX = x;
@@ -55,8 +59,9 @@ struct ui_element
         width = w;
         height = h;
         function = func;
-        func_n = f_n;
-        func_p = f_p;
+        func_p = _func_p;
+        func_d = _func_d;
+        func_i = _func_i;
         value = _linkValue;
     }
 
@@ -74,6 +79,7 @@ struct ui_element
                 }
                 return;
             }
+            buttonHovered = true;
 
             if (!mousePressed)
                 visual.rect.setColor(sf::Color(150, 150, 150, 255));
@@ -85,13 +91,16 @@ struct ui_element
 
             visual.rect.setColor(sf::Color(255, 255, 255, 255));
 
-            function(func_n, func_p);
+            function(func_p, func_d, func_i);
             break;
         case UI_VALUEISFRAME:
+            if (value == nullptr)
+                break;
             anim._sprite = &visual; // this should only happen once or so
             anim.frame = *value;
             anim.timer = 1.0f;
             anim.run(delta_time, false);
+            break;
         default:
             break;
         }
@@ -134,7 +143,7 @@ struct gui
 
 gui gui_data;
 
-void startGame(int n, player *p)
+void startGame(player *p, dungeon *d, int argv)
 {
     if (state > CHARACTER_CREATION_SCREEN)
         return;
@@ -143,15 +152,41 @@ void startGame(int n, player *p)
 
     // stategui.screenInitialization();
 }
-void optionsTab(int n, player *p)
+void optionsTab(player *p, dungeon *d, int argv)
 {
 }
-void nullFunc(int n, player *p) {}
-void characterMenu(int allySelected, player *player)
+void nullFunc(player *p, dungeon *d, int argv) {}
+void characterMenu(player *player, dungeon *d, int argv)
 {
-    player->selected[allySelected] = true;
+    for (int i = 0; i < character_limit; ++i)
+    {
+        if (player->allies[i].visual == nullptr)
+            continue;
+
+        player->selected[i] = false;
+        player->allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 255));
+    }
+    player->selected[argv] = true;
+    player->allies[argv].visual->rect.setColor(sf::Color(255, 255, 255, 170));
 }
-void quitGame(int n, player *p)
+
+void characterAbility(player *player, dungeon *d, int argv)
+{
+    int selection = -1;
+    for (int i = 0; i < character_limit; ++i)
+    {
+        if (player->selected[i])
+        {
+            selection = i;
+            break;
+        }
+    }
+    if (selection == -1)
+        return;
+
+    player->allies[selection].nextAbility = argv;
+}
+void quitGame(player *p, dungeon *d, int argv)
 {
     gui_data.quit = true;
 }

@@ -12,22 +12,28 @@ const unsigned int stat_limit = 14;
 const unsigned int entity_limit = 64;
 const unsigned int character_limit = 6;
 const unsigned int animation_limit = 24;
+const unsigned int target_limit = 12;
 
 extern float massScale, massYOffset;
 
 enum STATUS
 {
-    BUFFED,
-    NERFED,
-    MINOR_WOUND,
-    MAJOR_WOUND,
-    DEAD
+    BUFFED,      // any effect originating from an ally
+    NERFED,      // any effect originating from an enemy
+    MINOR_WOUND, // take over 1% of hp in one hit, less than 10%
+    MAJOR_WOUND, // take over 10% of hp in one hit
+    DEAD         // hp is 0 or less
 };
 
+struct character;
+
+// animation. When animation is on x frame, trigger ability. Ability consists of a list of targets, and a function. The function will take the targets and do something with them.
 struct attack
 {
-    int dmg;
-    std::pair<STATUS, unsigned int> status_chances[stat_limit];
+    int targetCount;
+    float distanceRequired;
+    character *targets[target_limit];
+    void (*use)(int, float, float, attack *);
 };
 
 enum IDENTIFICATION
@@ -44,19 +50,26 @@ enum ANIMATION_MAPPINGS
 {
     ANIM_IDLE,
     ANIM_WALK,
-    ANIM_ATTACK,
     ANIM_HURT,
     ANIM_DEAD,
-    ANIM_SPECIAL0 // continue with only specials, place hardcoded animations before the special animations (which are for custom scenarios)
+    ANIM_ABILITY_0, // continue with only specials, place hardcoded animations before the special animations (which are for custom scenarios)
+    ANIM_ABILITY_1,
+    ANIM_ABILITY_2,
+    ANIM_ABILITY_3,
+    ANIM_ABILITY_4,
+    ANIM_ABILITY_5,
+    ANIM_ABILITY_6,
+    ANIM_ABILITY_7,
+    ANIM_ABILITY_8
 };
 
 struct ch_class
 {
     std::string name;
-    attack abilities_list[class_att_limit];
+    attack abilities_list[att_limit];
     STATUS permanent_status_list[stat_limit];
 
-    int maxHP;
+    int maxHP, attackDamage;
     float attackSpeed, runSpeed, attackRange;
 
     float experienceToLvlUp;
@@ -64,23 +77,27 @@ struct ch_class
     ch_class()
     {
         maxHP = 10;
-        abilities_list[0].dmg = 10;
         attackSpeed = 10.0f;
         runSpeed = 100.0f;
         attackRange = 100.0f;
         experienceToLvlUp = 100;
     }
 
-    ch_class(std::string _n, int _mhp, int _attdmg, float _attspd, float _runspd, float _attrng, float _xpLvlUp)
+    ch_class(std::string _n, int _mhp, int _attdmg, float _attspd, float _runspd, float _attrng, float _xpLvlUp, void ability_func(int, float, float, attack *))
         : name(_n), maxHP(_mhp), attackSpeed(_attspd),
           runSpeed(_runspd), attackRange(_attrng),
-          experienceToLvlUp(_xpLvlUp) { abilities_list[0].dmg = _attdmg; }
+          experienceToLvlUp(_xpLvlUp)
+    {
+        attackDamage = _attdmg;
+        abilities_list[0].use = ability_func;
+    }
 };
 
 struct character
 {
     ch_class _class;
     float velocityX = 0.0f, velocityY = 0.0f;
+    int nextAbility = 0, lastAbility = 0;
 
     STATUS statuses[stat_limit];
     animation animations[animation_limit];
@@ -147,11 +164,15 @@ struct character
         if (attackTimer < 0.0f)
         {
             attackTimer = _class.attackSpeed;
-            target->hp -= _class.abilities_list[0].dmg;
-            std::cout << "huh\n";
-            std::cout << visual->path << ", " << _class.abilities_list[0].dmg;
+            // target->hp -= _class.abilities_list[0].dmg;
+            _class.abilities_list[0].targets[0] = target;
+            _class.abilities_list[0].use(_class.attackDamage, posX, posY, &_class.abilities_list[0]);
+            lastAbility = nextAbility;
             target->takeHit(delta_time);
+            PlayAnimation(static_cast<ANIMATION_MAPPINGS>(ANIM_ABILITY_0 + nextAbility), delta_time, false);
         }
+        // figure out when an ability should be used. Last ability should be updated when an ability is used (or one line before it's set so that you can set it to the ability that's about to be overridden).
+        // There should be an overridable function (boolean?) that is checked once a move is used, and then that move will be set as the nextAbility and used next.
     }
 
     void Update(float delta_time, float screenOffsetX, float screenOffsetY)
@@ -168,25 +189,27 @@ struct character
 
         if (target != nullptr)
         {
-            walkToX = target->visual->rect.getPosition().x;
-            walkToY = target->visual->rect.getPosition().y;
 
-            float xDist = posX - target->visual->rect.getPosition().x;
-            float yDist = posY - target->visual->rect.getPosition().y;
+            float xDist = posX - target->posX;
+            float yDist = posY - target->posY;
 
             float distance = xDist * xDist + yDist * yDist;
+
+            if (distance > _class.attackRange)
+            {
+                walkToX = target->posX;
+                walkToY = target->posY;
+            }
+            else
+            {
+                strikeTarget(delta_time);
+            }
 
             if (target->hp <= 0)
             {
                 target = nullptr;
             }
-            if (distance < _class.attackRange)
-            {
-                PlayAnimation(ANIM_ATTACK, delta_time, false);
-                strikeTarget(delta_time);
-            }
         }
-
         float xWalkDist = posX - walkToX;
         float yWalkDist = posY - walkToY;
 
@@ -204,7 +227,6 @@ struct character
             velocityX = -xWalkDist / normalizationCap * _class.runSpeed * delta_time;
             velocityY = -yWalkDist / normalizationCap * _class.runSpeed * delta_time;
         }
-
         // if (std::abs(xWalkDist) < _class.runSpeed * delta_time * 1.2f) // find a good way to eliminate the overshoot (jittering)
         //     posX = walkToX;
         // if (std::abs(yWalkDist) < _class.runSpeed * delta_time * 1.2f)
@@ -215,11 +237,14 @@ struct character
             PlayAnimation(ANIM_IDLE, delta_time, true);
         }
 
-        animations[playingAnim].run(delta_time, animationLooping, &animationFinished);
+        animations[playingAnim].run(delta_time, animationLooping);
 
         visual->Put(posX + screenOffsetX, posY + screenOffsetY);
 
         animationFinished = false;
+
+        if (animations[playingAnim].finished)
+            animationFinished = true;
     }
     void updatePosition()
     {
@@ -233,7 +258,8 @@ struct character
     }
     void PlayAnimation(ANIMATION_MAPPINGS id, float delta_time, bool loops)
     {
-        if (animations[id]._sprite == nullptr)
+        if (animations[id]._sprite == nullptr || animations[id].start == animations[playingAnim].start && animations[id].end == animations[playingAnim].end &&
+                                                     animations[id].speed == animations[playingAnim].speed && !animations[playingAnim].finished)
             return;
 
         animations[id].frame = animations[id].start;
@@ -252,6 +278,7 @@ struct player
 {
     character allies[character_limit];
     bool selected[character_limit];
+    int firstUnitSelected = -1;
 
     void select(float minX, float minY, float maxX, float maxY)
     {
@@ -406,5 +433,23 @@ struct game_system
         }
     }
 };
+
+void ability_simpleMelee(int value, float currentPosX, float currentPosY, attack *thisAttack)
+{
+    for (int i = 0; i < thisAttack->targetCount; ++i)
+    {
+        if (thisAttack->targets[i] == nullptr)
+            continue;
+
+        float distanceX = currentPosX - thisAttack->targets[i]->posX;
+        float distanceY = currentPosY - thisAttack->targets[i]->posY;
+
+        float dist = distanceX * distanceX + distanceY * distanceY;
+        if (dist > thisAttack->distanceRequired)
+            continue;
+
+        thisAttack->targets[i]->hp -= value;
+    }
+}
 
 #endif
