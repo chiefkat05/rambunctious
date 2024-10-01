@@ -31,10 +31,32 @@ struct character;
 struct attack
 {
     int targetCount;
+    int activationFrame;
     float distanceRequired;
     character *targets[target_limit];
-    void (*use)(int, float, float, attack *);
+    character *parent;
+    void (*use)(int, attack *, character *);
+
+    void clear()
+    {
+        for (int i = 0; i < target_limit; ++i)
+        {
+            targets[i] = nullptr;
+        }
+    }
+    void updateTargets(character *tlist[target_limit], int tcount)
+    {
+        clear();
+
+        for (int i = 0; i < tcount; ++i)
+        {
+            targets[i] = tlist[i];
+        }
+        targetCount = tcount;
+    }
 };
+
+void ability_brawler_right_hook(int value, attack *thisAttack, character *parent);
 
 enum IDENTIFICATION
 {
@@ -83,13 +105,21 @@ struct ch_class
         experienceToLvlUp = 100;
     }
 
-    ch_class(std::string _n, int _mhp, int _attdmg, float _attspd, float _runspd, float _attrng, float _xpLvlUp, void ability_func(int, float, float, attack *))
+    ch_class(std::string _n, int _mhp, int _attdmg, float _attspd, float _runspd, float _attrng, float _xpLvlUp, void ability_func(int, attack *, character *))
         : name(_n), maxHP(_mhp), attackSpeed(_attspd),
           runSpeed(_runspd), attackRange(_attrng),
           experienceToLvlUp(_xpLvlUp)
     {
         attackDamage = _attdmg;
+        abilities_list[0].distanceRequired = _attrng;
         abilities_list[0].use = ability_func;
+    }
+
+    void setAbility(int index, void _func(int, attack *, character *), float distanceMultiple = 1.0f, int _frame = 0)
+    {
+        abilities_list[index].use = _func;
+        abilities_list[index].distanceRequired = attackRange * distanceMultiple;
+        abilities_list[index].activationFrame = _frame;
     }
 };
 
@@ -112,6 +142,7 @@ struct character
     int hp = 10;
 
     bool animationFinished = true, animationLooping = false;
+    bool attacking = false;
     ANIMATION_MAPPINGS playingAnim = ANIM_IDLE;
 
     unsigned int initiative = 0;
@@ -159,17 +190,24 @@ struct character
 
     void strikeTarget(float delta_time)
     {
-        attackTimer -= 10.0f * delta_time;
+        if (!attacking)
+        {
+            attackTimer -= 10.0f * delta_time;
+        }
 
-        if (attackTimer < 0.0f)
+        if (attackTimer < 0.0f && playingAnim != ANIM_ABILITY_0 + nextAbility)
+        {
+            PlayAnimation(static_cast<ANIMATION_MAPPINGS>(ANIM_ABILITY_0 + nextAbility), delta_time, false);
+            attacking = true;
+        }
+        if (attacking && animations[ANIM_ABILITY_0 + nextAbility].frame >= _class.abilities_list[nextAbility].activationFrame)
         {
             attackTimer = _class.attackSpeed;
-            // target->hp -= _class.abilities_list[0].dmg;
-            _class.abilities_list[0].targets[0] = target;
-            _class.abilities_list[0].use(_class.attackDamage, posX, posY, &_class.abilities_list[0]);
+            _class.abilities_list[nextAbility].updateTargets(new character *{target}, 1);
+            _class.abilities_list[nextAbility].use(_class.attackDamage, &_class.abilities_list[0], this);
+            target->takeHit(delta_time); // this needs to be a reference to the attack->targets, not positional target. Also, attack->targets needs to be able to target anybody within range of the attack, capped at attack->targetcount
+            attacking = false;
             lastAbility = nextAbility;
-            target->takeHit(delta_time);
-            PlayAnimation(static_cast<ANIMATION_MAPPINGS>(ANIM_ABILITY_0 + nextAbility), delta_time, false);
         }
         // figure out when an ability should be used. Last ability should be updated when an ability is used (or one line before it's set so that you can set it to the ability that's about to be overridden).
         // There should be an overridable function (boolean?) that is checked once a move is used, and then that move will be set as the nextAbility and used next.
@@ -258,8 +296,7 @@ struct character
     }
     void PlayAnimation(ANIMATION_MAPPINGS id, float delta_time, bool loops)
     {
-        if (animations[id]._sprite == nullptr || animations[id].start == animations[playingAnim].start && animations[id].end == animations[playingAnim].end &&
-                                                     animations[id].speed == animations[playingAnim].speed && !animations[playingAnim].finished)
+        if (animations[id]._sprite == nullptr)
             return;
 
         animations[id].frame = animations[id].start;
@@ -434,21 +471,66 @@ struct game_system
     }
 };
 
-void ability_simpleMelee(int value, float currentPosX, float currentPosY, attack *thisAttack)
+void ability_simpleMelee(int value, attack *thisAttack, character *parent)
 {
     for (int i = 0; i < thisAttack->targetCount; ++i)
     {
         if (thisAttack->targets[i] == nullptr)
             continue;
 
-        float distanceX = currentPosX - thisAttack->targets[i]->posX;
-        float distanceY = currentPosY - thisAttack->targets[i]->posY;
+        float distanceX = parent->posX - thisAttack->targets[i]->posX;
+        float distanceY = parent->posY - thisAttack->targets[i]->posY;
 
         float dist = distanceX * distanceX + distanceY * distanceY;
         if (dist > thisAttack->distanceRequired)
             continue;
 
         thisAttack->targets[i]->hp -= value;
+    }
+}
+void ability_brawler_hook(int value, attack *thisAttack, character *parent)
+{
+    static int attackCount = 0;
+    for (int i = 0; i < thisAttack->targetCount; ++i)
+    {
+        if (thisAttack->targets[i] == nullptr)
+            continue;
+
+        float distanceX = parent->posX - thisAttack->targets[i]->posX;
+        float distanceY = parent->posY - thisAttack->targets[i]->posY;
+
+        float dist = distanceX * distanceX + distanceY * distanceY;
+        if (dist > thisAttack->distanceRequired)
+            continue;
+
+        ++attackCount;
+
+        thisAttack->targets[i]->hp -= value;
+        if (attackCount > 2)
+        {
+            attackCount = 0;
+            ++parent->nextAbility;
+        }
+        parent->attackTimer = parent->_class.attackSpeed * 0.2f;
+    }
+}
+void ability_brawler_right_hook(int value, attack *thisAttack, character *parent)
+{
+    for (int i = 0; i < thisAttack->targetCount; ++i)
+    {
+        if (thisAttack->targets[i] == nullptr)
+            continue;
+
+        float distanceX = parent->posX - thisAttack->targets[i]->posX;
+        float distanceY = parent->posY - thisAttack->targets[i]->posY;
+
+        float dist = distanceX * distanceX + distanceY * distanceY;
+        if (dist > thisAttack->distanceRequired)
+            continue;
+
+        thisAttack->targets[i]->hp -= value * 1.5f;
+        --parent->nextAbility;
+        parent->attackTimer = parent->_class.attackSpeed * 1.6f;
     }
 }
 

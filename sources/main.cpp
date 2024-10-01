@@ -293,31 +293,28 @@ int main()
 
     window.setView(screen);
 
-    sprite brawler("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 5, 4);
-    sprite detective("../img/classes/violent/detective.png", 130.0f, 40.0f, 16.0f, 16.0f, 6, 1);
-    sprite bloom("../img/classes/violent/bloom.png", 110.0f, 40.0f, 16.0f, 16.0f, 6, 1);
+    sprite brawler("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6); // animation for walking brawler, simple code for looking either way. Animations for enemy, simple code for spawning them in the .sdf file. Animations for icons. Overhaul art with simplistic 4/8-color style
     sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, 16.0f, 16.0f, 1, 1);
 
     ch_class brawler_class("brawler", 20, 7, 8.0f, 60.0f, 200.0f, 150, ability_simpleMelee);
-    ch_class detective_class("detective", 10, 12, 16.0f, 90.0f, 700.0f, 200, ability_simpleMelee);
-    ch_class bloom_class("bloom", 15, 4, 2.0f, 80.0f, 300.0f, 150, ability_simpleMelee);
+    brawler_class.setAbility(0, ability_brawler_hook, 2);
+    brawler_class.setAbility(1, ability_brawler_right_hook, 1.1f, 10);
     ch_class meg("megdrer", 140, 2, 14.5f, 120.0f, 400.0f, 40, ability_simpleMelee);
 
     dungeon currentDungeon("../img/tiles/dungeons/blue/blue.png", 64.0f, 64.0f, massScale, massYOffset);
     currentDungeon.readRoomFile("../dungeons/blue.sdf", massScale, massYOffset);
     player mainPlayer;
     mainPlayer.allies[0] = character(&brawler, CH_PLAYER, brawler_class);
-    mainPlayer.allies[1] = character(&detective, CH_PLAYER, detective_class);
-    mainPlayer.allies[2] = character(&bloom, CH_PLAYER, bloom_class);
 
     character e1(&megdrer, CH_MONSTER, meg);
 
     sf::Clock sfClock;
     sf::Time sfTime;
 
-    mainPlayer.allies[0].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
-    mainPlayer.allies[0].SetAnimation(ANIM_HURT, 5, 7, 150.0f);
-    mainPlayer.allies[0].SetAnimation(ANIM_ABILITY_0, 8, 19, 150.0f);
+    mainPlayer.allies[0].SetAnimation(ANIM_IDLE, 0, 8, 150.0f);
+    mainPlayer.allies[0].SetAnimation(ANIM_HURT, 9, 14, 150.0f);
+    mainPlayer.allies[0].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
+    mainPlayer.allies[0].SetAnimation(ANIM_ABILITY_1, 23, 41, 300.0f);
     mainPlayer.allies[1].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
     mainPlayer.allies[2].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
     e1.SetAnimation(ANIM_IDLE, 0, 0, 150.0f);
