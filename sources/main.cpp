@@ -15,6 +15,10 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
     static sprite sTopRight("../img/ui/unit-control/playerselect-c-h.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
     static sprite sBottomLeft("../img/ui/unit-control/playerselect-c-v.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
     static sprite sBottomRight("../img/ui/unit-control/playerselect-c-vh.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sLeft("../img/ui/unit-control/playerselect-h.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sRight("../img/ui/unit-control/playerselect-h.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sBottom("../img/ui/unit-control/playerselect-w.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
+    static sprite sTop("../img/ui/unit-control/playerselect-w.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
     static sprite sMove("../img/ui/unit-control/playertarget-move.png", 0.0f, 0.0f, 16.0f, 16.0f, 1, 1);
     static sprite sAttack("../img/ui/unit-control/playertarget-attack.png", 0.0f, 0.0f, 16.0f, 16.0f, 1, 1);
     static float boxClickX, boxClickY, boxMinX, boxMinY, boxMaxX, boxMaxY;
@@ -68,6 +72,19 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
         window.draw(sBottomLeft.rect);
         sBottomRight.Put(boxMaxX * massScale - 8.0f, boxMaxY * massScale - 8.0f);
         window.draw(sBottomRight.rect);
+        sTop.Put(boxMinX * massScale + 8, boxMinY * massScale);
+        sTop.rect.setTextureRect(sf::IntRect(0, 0, (boxMaxX - boxMinX) * massScale - 16, 8));
+        window.draw(sTop.rect);
+        sBottom.Put(boxMinX * massScale + 8, boxMaxY * massScale - 3);
+        sBottom.rect.setTextureRect(sf::IntRect(0, 0, (boxMaxX - boxMinX) * massScale - 16, 8));
+        window.draw(sBottom.rect);
+
+        sLeft.Put(boxMinX * massScale, boxMinY * massScale + 8);
+        sLeft.rect.setTextureRect(sf::IntRect(0, 0, 8, (boxMaxY - boxMinY) * massScale - 16));
+        window.draw(sLeft.rect);
+        sRight.Put(boxMaxX * massScale - 3, boxMinY * massScale + 8);
+        sRight.rect.setTextureRect(sf::IntRect(0, 0, 8, (boxMaxY - boxMinY) * massScale - 16));
+        window.draw(sRight.rect);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
@@ -217,6 +234,7 @@ void mouseUpdate()
 
 int prevState = -1;
 int hpAmounts[character_limit];
+int expAmounts[character_limit];
 int abilitySelection[att_limit];
 // edit all guis here
 void menuData(player &mainP, dungeon &floor)
@@ -266,6 +284,8 @@ void menuData(player &mainP, dungeon &floor)
 
             gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, 1, 1, characterMenu, &mainP, nullptr, i));
             gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", 238.0f, 9.0f + i * 20.0f, 16.0f, 4.0f, 15, 1, nullFunc, nullptr, nullptr, 0, &hpAmounts[i]));
+            gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/experience.png", 230.0f, 20.0f + i * 20.0f, 24.0f, 2.0f, 25, 1, nullFunc,
+                                                   nullptr, nullptr, 0, &expAmounts[i]));
         }
         for (int j = 0; j < att_limit; ++j)
         {
@@ -294,9 +314,12 @@ int main()
     window.setView(screen);
 
     sprite brawler("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6); // animation for walking brawler, simple code for looking either way. Animations for enemy, simple code for spawning them in the .sdf file. Animations for icons. Overhaul art with simplistic 4/8-color style
+    sprite brawler2("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6);
+    sprite brawler3("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6);
     sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, 16.0f, 16.0f, 1, 1);
 
     ch_class brawler_class("brawler", 20, 7, 8.0f, 60.0f, 200.0f, 150, ability_simpleMelee);
+
     brawler_class.setAbility(0, ability_brawler_hook, 2);
     brawler_class.setAbility(1, ability_brawler_right_hook, 1.1f, 10);
     ch_class meg("megdrer", 140, 2, 14.5f, 120.0f, 400.0f, 40, ability_simpleMelee);
@@ -305,6 +328,8 @@ int main()
     currentDungeon.readRoomFile("../dungeons/blue.sdf", massScale, massYOffset);
     player mainPlayer;
     mainPlayer.allies[0] = character(&brawler, CH_PLAYER, brawler_class);
+    mainPlayer.allies[1] = character(&brawler2, CH_PLAYER, brawler_class);
+    mainPlayer.allies[2] = character(&brawler3, CH_PLAYER, brawler_class);
 
     character e1(&megdrer, CH_MONSTER, meg);
 
@@ -355,7 +380,6 @@ int main()
 
         mouseUpdate();
 
-        // next up is either animation code stuff, or, since I know you don't want to do that
         // graphics and code for the leveling up mechanic
         // just have it where killing grants that character xp and enough xp gives bonus dmg and hp
         // yomi hustle time system (everything should be linked)
@@ -386,6 +410,9 @@ int main()
                 if (mainPlayer.allies[i].visual == nullptr)
                     continue;
                 hpAmounts[i] = 14 - static_cast<int>((static_cast<float>(mainPlayer.allies[i].hp) / static_cast<float>(mainPlayer.allies[i]._class.maxHP)) * 14.0f);
+                expAmounts[i] = 24 - static_cast<int>((static_cast<float>(mainPlayer.allies[i].experiencePoints) /
+                                                       static_cast<float>(mainPlayer.allies[i]._class.experienceToLvlUp)) *
+                                                      24.0f);
             }
             for (int i = 0; i < att_limit; ++i)
             {

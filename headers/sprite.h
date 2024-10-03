@@ -3,7 +3,7 @@
 
 #include "setup.h"
 
-const unsigned int texture_limit = 24;
+const unsigned int texture_limit = 32;
 
 struct texturePile
 {

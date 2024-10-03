@@ -94,7 +94,7 @@ struct ch_class
     int maxHP, attackDamage;
     float attackSpeed, runSpeed, attackRange;
 
-    float experienceToLvlUp;
+    int experienceToLvlUp;
 
     ch_class()
     {
@@ -105,14 +105,17 @@ struct ch_class
         experienceToLvlUp = 100;
     }
 
-    ch_class(std::string _n, int _mhp, int _attdmg, float _attspd, float _runspd, float _attrng, float _xpLvlUp, void ability_func(int, attack *, character *))
+    ch_class(std::string _n, int _mhp, int _attdmg, float _attspd, float _runspd, float _attrng, int _xpLvlUp, void ability_func(int, attack *, character *))
         : name(_n), maxHP(_mhp), attackSpeed(_attspd),
           runSpeed(_runspd), attackRange(_attrng),
           experienceToLvlUp(_xpLvlUp)
     {
         attackDamage = _attdmg;
-        abilities_list[0].distanceRequired = _attrng;
-        abilities_list[0].use = ability_func;
+        for (int i = 0; i < att_limit; ++i)
+        {
+            abilities_list[i].distanceRequired = _attrng;
+            abilities_list[i].use = ability_func;
+        }
     }
 
     void setAbility(int index, void _func(int, attack *, character *), float distanceMultiple = 1.0f, int _frame = 0)
@@ -140,6 +143,7 @@ struct character
     IDENTIFICATION id = CH_MONSTER;
     float attackTimer = 0.0f;
     int hp = 10;
+    int experiencePoints = 0, level = 1;
 
     bool animationFinished = true, animationLooping = false;
     bool attacking = false;
@@ -208,6 +212,11 @@ struct character
             target->takeHit(delta_time); // this needs to be a reference to the attack->targets, not positional target. Also, attack->targets needs to be able to target anybody within range of the attack, capped at attack->targetcount
             attacking = false;
             lastAbility = nextAbility;
+
+            if (target->hp <= 0 && target->id != id)
+            {
+                experiencePoints += target->_class.maxHP / 10;
+            }
         }
         // figure out when an ability should be used. Last ability should be updated when an ability is used (or one line before it's set so that you can set it to the ability that's about to be overridden).
         // There should be an overridable function (boolean?) that is checked once a move is used, and then that move will be set as the nextAbility and used next.

@@ -34,6 +34,7 @@ sprite::sprite(const char *_path, float _x, float _y, float _w, float _h, unsign
         std::cout << "error: image " << _path << " failed to load.\n";
         return;
     }
+    tPile.list[tPile.count].setRepeated(true);
 
     if (!foundMatchingTexture)
     {
