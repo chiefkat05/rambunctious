@@ -266,5 +266,6 @@ CMakeFiles/main.dir/sources/main.cpp.o: \
  /usr/include/c++/14.2.1/iostream \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/system.h \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/dungeon.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/gamestate.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h

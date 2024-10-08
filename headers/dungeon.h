@@ -10,6 +10,7 @@ const unsigned int room_limit = 12;
 const unsigned int width_limit = 64;
 const unsigned int height_limit = 64;
 const unsigned int collision_box_limit = 64;
+const unsigned int entity_limit_2 = 64;
 
 #define NULL_TILE -2147483647
 
@@ -17,6 +18,10 @@ struct dungeon
 {
     bool start = true, end = false;
     sprite tiles[width_limit][height_limit];
+
+    sprite enemies[entity_limit_2];
+    int enemyCount = 0;
+
     unsigned int roomWidth = 0, roomHeight = 0;
     unsigned int tileSpriteX, tileSpriteY;
     float spawnLocationX = 0.0f, spawnLocationY = 0.0f;
@@ -44,7 +49,7 @@ struct dungeon
     // }
 
     void updateScreenPosition(float mouseX, float mouseY, float delta_time, float massScale, float massYOffset)
-    {
+    { // add a scrollspeed variable for easy, also remember attack selection is offput by screenscroll, which is incorrect
         if (mouseX < 10.0f / massScale)
             screenPositionX += (80.0f / massScale - (mouseX * 8.0f)) * delta_time * massScale;
         if (mouseX > 246.0f / massScale)
@@ -147,6 +152,13 @@ struct dungeon
                     tiles[i][roomHeight].rect.setTextureRect(sf::IntRect(0, 0, 16, 16));
                     spawnLocationX = tiles[i][roomHeight].rect.getPosition().x;
                     spawnLocationY = tiles[i][roomHeight].rect.getPosition().y;
+                    break;
+                case 'e':
+                    tiles[i][roomHeight].rect.setTextureRect(sf::IntRect(0, 0, 16, 16));
+                    enemies[enemyCount] = sprite("../img/enemies/dungeon-1/megdrer.png", tiles[i][roomHeight].rect.getPosition().x,
+                                                 tiles[i][roomHeight].rect.getPosition().y, 16.0f, 16.0f, 1, 1);
+
+                    ++enemyCount;
                 default:
                     tiles[i][roomHeight].rect.setTextureRect(sf::IntRect(0, 0, 16, 16));
                     break;

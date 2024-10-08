@@ -145,26 +145,13 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
 
         for (int i = 0; i < game.characterCount; ++i)
         {
-            if (game.characters[i] == nullptr)
+            if (game.characters[i] == nullptr || game.characters[i]->id != CH_MONSTER && game.characters[i]->id != CH_EVIL)
                 continue;
 
-            bool targettedFriend = false;
-            for (int j = 0; j < character_limit; ++j)
-            {
-                if (game.characters[i] == &p.allies[j])
-                {
-                    targettedFriend = true;
-                    break;
-                }
-            }
-
-            if (targettedFriend)
-                continue;
-
-            if (mouseX > game.characters[i]->posX / massScale - game.characters[i]->selectionSize / massScale &&
-                mouseX < game.characters[i]->posX / massScale + game.characters[i]->selectionSize / massScale &&
-                mouseY > game.characters[i]->posY / massScale + massYOffset - game.characters[i]->selectionSize / massScale &&
-                mouseY < game.characters[i]->posY / massScale + massYOffset + game.characters[i]->selectionSize / massScale && game.characters[i]->hp > 0)
+            if (mouseX - floor->screenPositionX / massScale > game.characters[i]->posX / massScale - game.characters[i]->selectionSize / massScale &&
+                mouseX - floor->screenPositionX / massScale < game.characters[i]->posX / massScale + game.characters[i]->selectionSize / massScale &&
+                mouseY - floor->screenPositionY / massScale > game.characters[i]->posY / massScale + massYOffset - game.characters[i]->selectionSize / massScale &&
+                mouseY - floor->screenPositionY / massScale < game.characters[i]->posY / massScale + massYOffset + game.characters[i]->selectionSize / massScale && game.characters[i]->hp > 0)
             {
                 targeted = game.characters[i];
                 break;
@@ -195,9 +182,9 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
                                mouseY * massScale + offsetY - massYOffset * massScale, floor);
 
             p.allies[i].target = targeted;
-            if (targeted != nullptr)
+            if (targeted != nullptr) // attack selection is messed up with scrolled level!!!
             {
-                sAttack.Put(mouseX * massScale - 8.0f, mouseY * massScale - 16.0f + massYOffset * massScale);
+                sAttack.Put(mouseX * massScale - 8.0f, mouseY * massScale - massYOffset * massScale - 16.0f);
                 window.draw(sAttack.rect);
             }
             else
@@ -234,10 +221,12 @@ void mouseUpdate()
 
 int prevState = -1;
 int hpAmounts[character_limit];
+int entityHP[entity_limit];
+int entityHP_UI_Index = 0;
 int expAmounts[character_limit];
 int abilitySelection[att_limit];
 // edit all guis here
-void menuData(player &mainP, dungeon &floor)
+void menuData(game_system &mainG, player &mainP, dungeon &floor)
 {
     if (state == prevState)
         return;
@@ -267,6 +256,16 @@ void menuData(player &mainP, dungeon &floor)
         gui_data.background = sprite("../img/ui/backgrounds/dungeon.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
         gui_data.background.rect.setColor(sf::Color(255, 255, 255, 0));
 
+        entityHP_UI_Index = gui_data.elements.size();
+        for (int i = 0; i < mainG.characterCount; ++i)
+        {
+            if (mainG.characters[i]->visual == nullptr)
+                continue;
+
+            gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", mainG.characters[i]->posX, mainG.characters[i]->posY,
+                                                   16.0f, 4.0f, 15, 1, nullFunc, nullptr, nullptr, 0, &entityHP[i]));
+        }
+
         gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/dungeon_ui.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
         for (int i = 0; i < character_limit; ++i)
         {
@@ -287,6 +286,7 @@ void menuData(player &mainP, dungeon &floor)
             gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/experience.png", 230.0f, 20.0f + i * 20.0f, 24.0f, 2.0f, 25, 1, nullFunc,
                                                    nullptr, nullptr, 0, &expAmounts[i]));
         }
+
         for (int j = 0; j < att_limit; ++j)
         {
             gui_data.elements.push_back(ui_element(
@@ -306,6 +306,7 @@ void menuData(player &mainP, dungeon &floor)
     prevState = state;
 }
 
+bool pauseKeyHeld;
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(256, 128), "rambunctious_alpha_0.0");
@@ -316,7 +317,6 @@ int main()
     sprite brawler("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6); // animation for walking brawler, simple code for looking either way. Animations for enemy, simple code for spawning them in the .sdf file. Animations for icons. Overhaul art with simplistic 4/8-color style
     sprite brawler2("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6);
     sprite brawler3("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6);
-    sprite megdrer("../img/enemies/dungeon-1/megdrer.png", 30.0f, 30.0f, 16.0f, 16.0f, 1, 1);
 
     ch_class brawler_class("brawler", 20, 7, 8.0f, 60.0f, 200.0f, 150, ability_simpleMelee);
 
@@ -331,8 +331,6 @@ int main()
     mainPlayer.allies[1] = character(&brawler2, CH_PLAYER, brawler_class);
     mainPlayer.allies[2] = character(&brawler3, CH_PLAYER, brawler_class);
 
-    character e1(&megdrer, CH_MONSTER, meg);
-
     sf::Clock sfClock;
     sf::Time sfTime;
 
@@ -341,12 +339,24 @@ int main()
     mainPlayer.allies[0].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
     mainPlayer.allies[0].SetAnimation(ANIM_ABILITY_1, 23, 41, 300.0f);
     mainPlayer.allies[1].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
+    mainPlayer.allies[1].SetAnimation(ANIM_HURT, 9, 14, 150.0f);
+    mainPlayer.allies[1].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
+    mainPlayer.allies[1].SetAnimation(ANIM_ABILITY_1, 23, 41, 300.0f);
     mainPlayer.allies[2].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
-    e1.SetAnimation(ANIM_IDLE, 0, 0, 150.0f);
+    mainPlayer.allies[2].SetAnimation(ANIM_HURT, 9, 14, 150.0f);
+    mainPlayer.allies[2].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
+    mainPlayer.allies[2].SetAnimation(ANIM_ABILITY_1, 23, 41, 300.0f);
 
     game_system game;
     game.Add(&mainPlayer);
-    game.Add(&e1);
+
+    character dungeonEnemies[currentDungeon.enemyCount];
+    for (int i = 0; i < currentDungeon.enemyCount; ++i)
+    {
+        dungeonEnemies[i] = character(&currentDungeon.enemies[i], CH_MONSTER, meg); // the 'meg' class part of this needs to be switch statemented into multiple classes
+        dungeonEnemies[i].SetAnimation(ANIM_IDLE, 0, 0, 150.0f);
+        game.Add(&dungeonEnemies[i]);
+    }
 
     sprite resolutionBlinderTop("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
     sprite resolutionBlinderBottom("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
@@ -380,17 +390,23 @@ int main()
 
         mouseUpdate();
 
-        // graphics and code for the leveling up mechanic
-        // just have it where killing grants that character xp and enough xp gives bonus dmg and hp
         // yomi hustle time system (everything should be linked)
         // also pause button (probably with space key)
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             window.close();
 
+        if (!pauseKeyHeld && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            game.paused = !game.paused;
+        }
+        pauseKeyHeld = false;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            pauseKeyHeld = true;
+
         window.clear();
 
-        menuData(mainPlayer, currentDungeon);
+        menuData(game, mainPlayer, currentDungeon);
         if (state == DUNGEON_SCREEN)
         {
             currentDungeon.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
@@ -429,7 +445,12 @@ int main()
                 {
                     continue;
                 }
-                window.draw(game.characters[i]->visual->rect);
+
+                gui_data.elements[entityHP_UI_Index + i].visual.Put(game.characters[i]->visual->rect.getPosition().x, game.characters[i]->visual->rect.getPosition().y);
+                entityHP[i] = 14 - static_cast<int>((static_cast<float>(game.characters[i]->hp) / static_cast<float>(game.characters[i]->_class.maxHP)) * 14.0f);
+
+                // window.draw(game.characters[i]->visual->rect);
+                window.draw(game.sortedSprites[i]->rect);
             }
         }
         gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);

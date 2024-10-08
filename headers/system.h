@@ -5,11 +5,12 @@
 #include <string>
 #include "sprite.h"
 #include "collision.h"
+#include "dungeon.h"
 
 const unsigned int att_limit = 4;
 const unsigned int class_att_limit = 52;
 const unsigned int stat_limit = 14;
-const unsigned int entity_limit = 64;
+const unsigned int entity_limit = 64; // also change in dungeon.h since there's another one there, also delete one of these so that there's only one pls
 const unsigned int character_limit = 6;
 const unsigned int animation_limit = 24;
 const unsigned int target_limit = 12;
@@ -349,11 +350,41 @@ struct player
     }
 };
 
+int qsPartition(sprite *sprites[entity_limit], int low, int high) // see if there's a better optimized way to do this, such as random pivot
+{
+    sprite *pivot = sprites[low];
+
+    int i = high + 1;
+    for (int j = low + 1; j <= high; ++j)
+    {
+        if (sprites[j]->rect.getPosition().y > pivot->rect.getPosition().y)
+        {
+            --i;
+            std::swap(sprites[i], sprites[j]);
+        }
+    }
+
+    std::swap(sprites[i - 1], sprites[low]);
+    return i - 1;
+}
+void quicksortSprites(sprite *sprites[entity_limit], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = qsPartition(sprites, low, high);
+
+        quicksortSprites(sprites, low, pi - 1);
+        quicksortSprites(sprites, pi + 1, high);
+    }
+}
+
 // quadtree and collision stuff probably should go in game_system
 struct game_system
 {
     character *characters[entity_limit];
+    sprite *sortedSprites[entity_limit];
     int characterCount = 0;
+    bool paused = true;
     terrain ground, air;
 
     void Add(player *p)
@@ -364,17 +395,29 @@ struct game_system
                 continue;
 
             characters[characterCount] = &p->allies[i];
+            sortedSprites[characterCount] = characters[characterCount]->visual;
             ++characterCount;
         }
     }
     void Add(character *e)
     {
         characters[characterCount] = e;
+        sortedSprites[characterCount] = characters[characterCount]->visual;
         ++characterCount;
     }
 
     void update(dungeon &floor, float delta_time)
     {
+        if (paused)
+        {
+            for (int i = 0; i < characterCount; ++i)
+            {
+                characters[i]->visual->Put(characters[i]->posX + floor.screenPositionX, characters[i]->posY + floor.screenPositionY);
+            }
+            return;
+        }
+
+        quicksortSprites(sortedSprites, 0, characterCount - 1);
         for (int i = 0; i < characterCount; ++i)
         {
             for (int j = 0; j < characterCount; ++j)
