@@ -386,6 +386,8 @@ struct game_system
     int characterCount = 0;
     bool paused = false;
     terrain ground, air;
+    sf::Music game_music;
+    bool music_playing = false;
 
     void Add(player *p)
     {
@@ -404,6 +406,19 @@ struct game_system
         characters[characterCount] = e;
         sortedSprites[characterCount] = characters[characterCount]->visual;
         ++characterCount;
+    }
+
+    void handleMusic()
+    {
+        if (game_music.getDuration() == sf::Time::Zero)
+        {
+            return;
+        }
+        if (!music_playing || game_music.getStatus() == sf::Music::Stopped)
+        {
+            game_music.play();
+            music_playing = true;
+        }
     }
 
     void update(dungeon &floor, float delta_time)

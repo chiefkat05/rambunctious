@@ -237,6 +237,10 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
     switch (state)
     {
     case START_SCREEN:
+        if (!mainG.game_music.openFromFile("../snd/mus/01.mp3"))
+        {
+            std::cout << "failed to load ../snd/mus/01.mp3\n";
+        }
         gui_data.background = sprite("../img/ui/backgrounds/start.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
         gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
         gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/buttons/start.png", 40.0f, 40.0f, 16.0f, 16.0f, 1, 1, startGame));
@@ -253,6 +257,10 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
         gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, 1, 1, startGame));
         break;
     case DUNGEON_SCREEN:
+        if (!mainG.game_music.openFromFile("../snd/mus/Blue-1.mp3"))
+        {
+            std::cout << "failed to load ../snd/mus/Blue-1.mp3\n";
+        }
         gui_data.background = sprite("../img/ui/backgrounds/dungeon.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
         gui_data.background.rect.setColor(sf::Color(255, 255, 255, 0));
 
@@ -299,9 +307,17 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
         }
         break;
     case LOSE_SCREEN:
+        if (!mainG.game_music.openFromFile("../snd/mus/fail.mp3"))
+        {
+            std::cout << "failed to load ../snd/mus/fail.mp3\n";
+        }
         gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/game_over.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
         break;
     case WIN_SCREEN:
+        if (!mainG.game_music.openFromFile("../snd/mus/win.mp3"))
+        {
+            std::cout << "failed to load ../snd/mus/win.mp3\n";
+        }
         gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/victory.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
         break;
     default:
@@ -411,6 +427,7 @@ int main()
         window.clear();
 
         menuData(game, mainPlayer, currentDungeon);
+        game.handleMusic();
         if (state == DUNGEON_SCREEN)
         {
             currentDungeon.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);

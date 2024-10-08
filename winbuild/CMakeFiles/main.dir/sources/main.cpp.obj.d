@@ -280,6 +280,26 @@ CMakeFiles/main.dir/sources/main.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/SFML/Graphics/Sprite.hpp \
  /usr/x86_64-w64-mingw32/include/SFML/Graphics/Text.hpp \
  /usr/x86_64-w64-mingw32/include/SFML/Graphics/VertexBuffer.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/InputSoundFile.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/Export.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/Listener.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/Music.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundStream.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundSource.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/AlResource.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/OutputSoundFile.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/Sound.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBuffer.hpp \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/set \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_set.h \
+ /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_multiset.h \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBufferRecorder.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundRecorder.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.inl \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileReader.hpp \
+ /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileWriter.hpp \
  /usr/x86_64-w64-mingw32/include/c++/13.1.0/iostream \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/system.h \

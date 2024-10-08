@@ -72,9 +72,8 @@ struct animation
                 timer = 10.0f;
 
                 frame >= end ? frame = end : ++frame;
-            } // pls fix window size thing and animation frames needing to be always x-oriented.
-            // ( I know it's not a big deal but if you do this now you can just copy the code in the future when you don't want to deal with this next time :) )
-        } //             ^^ I think it's already done ?
+            }
+        }
 
         timer -= speed * delta_time;
 

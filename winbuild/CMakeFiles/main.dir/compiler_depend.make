@@ -13,6 +13,23 @@ CMakeFiles/main.dir/sources/main.cpp.obj: /home/chiefkat/Documents/vscodeproject
   /usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stddef.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/syslimits.h \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/AlResource.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Export.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/InputSoundFile.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Listener.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Music.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/OutputSoundFile.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Sound.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBuffer.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBufferRecorder.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.inl \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileReader.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileWriter.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundRecorder.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundSource.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundStream.hpp \
   /usr/x86_64-w64-mingw32/include/SFML/Config.hpp \
   /usr/x86_64-w64-mingw32/include/SFML/Graphics.hpp \
   /usr/x86_64-w64-mingw32/include/SFML/Graphics/BlendMode.hpp \
@@ -160,8 +177,10 @@ CMakeFiles/main.dir/sources/main.cpp.obj: /home/chiefkat/Documents/vscodeproject
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_iterator_base_types.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_map.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_multimap.h \
+  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_multiset.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_numeric.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_pair.h \
+  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_set.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_tempbuf.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_tree.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_uninitialized.h \
@@ -214,6 +233,7 @@ CMakeFiles/main.dir/sources/main.cpp.obj: /home/chiefkat/Documents/vscodeproject
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/pstl/glue_numeric_defs.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/pstl/pstl_config.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/random \
+  /usr/x86_64-w64-mingw32/include/c++/13.1.0/set \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/stdexcept \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/stdlib.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/streambuf \
@@ -295,6 +315,23 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
   /usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stddef.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/syslimits.h \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/AlResource.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Export.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/InputSoundFile.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Listener.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Music.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/OutputSoundFile.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/Sound.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBuffer.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBufferRecorder.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.inl \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileReader.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileWriter.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundRecorder.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundSource.hpp \
+  /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundStream.hpp \
   /usr/x86_64-w64-mingw32/include/SFML/Config.hpp \
   /usr/x86_64-w64-mingw32/include/SFML/Graphics.hpp \
   /usr/x86_64-w64-mingw32/include/SFML/Graphics/BlendMode.hpp \
@@ -438,7 +475,9 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_iterator_base_types.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_map.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_multimap.h \
+  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_multiset.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_pair.h \
+  /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_set.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_tempbuf.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_tree.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_uninitialized.h \
@@ -484,6 +523,7 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/pstl/execution_defs.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/pstl/glue_algorithm_defs.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/pstl/pstl_config.h \
+  /usr/x86_64-w64-mingw32/include/c++/13.1.0/set \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/stdexcept \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/stdlib.h \
   /usr/x86_64-w64-mingw32/include/c++/13.1.0/streambuf \
@@ -548,8 +588,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/sys/timeb.h:
 
-/usr/x86_64-w64-mingw32/include/swprintf.inl:
-
 /usr/x86_64-w64-mingw32/include/stdlib.h:
 
 /usr/x86_64-w64-mingw32/include/stdio.h:
@@ -559,8 +597,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 /usr/x86_64-w64-mingw32/include/stddef.h:
 
 /usr/x86_64-w64-mingw32/include/signal.h:
-
-/usr/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h:
 
 /usr/x86_64-w64-mingw32/include/sec_api/stdio_s.h:
 
@@ -580,23 +616,41 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/limits.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/hash_bytes.h:
+/usr/x86_64-w64-mingw32/include/ctype.h:
 
-/usr/x86_64-w64-mingw32/include/_mingw_stat64.h:
+/usr/x86_64-w64-mingw32/include/crtdefs.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/ostream.tcc:
+/usr/x86_64-w64-mingw32/include/corecrt_wstdlib.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/functexcept.h:
+/usr/x86_64-w64-mingw32/include/corecrt_stdio_config.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/cwchar:
+/usr/x86_64-w64-mingw32/include/wchar.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/exception_ptr.h:
+/usr/x86_64-w64-mingw32/include/corecrt_startup.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/exception_defines.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/os_defines.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/functional_hash.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/opt_random.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/erase_if.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/messages_members.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/gthr-default.h:
+
+/usr/x86_64-w64-mingw32/include/vadefs.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/ctype_inline.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/ctype_base.h:
+
+/usr/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/cpu_defines.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++io.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++config.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++allocator.h:
 
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/RenderStates.hpp:
 
@@ -608,8 +662,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/new:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/gthr-default.h:
-
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/algorithm:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cxxabi_forced.h:
@@ -620,21 +672,25 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/_mingw.h:
 
-/usr/x86_64-w64-mingw32/include/ctype.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++locale.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_conv.h:
+/usr/x86_64-w64-mingw32/include/SFML/System/Utf.inl:
 
 /usr/x86_64-w64-mingw32/include/SFML/Window/Keyboard.hpp:
+
+/usr/x86_64-w64-mingw32/include/corecrt.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/Vulkan.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Rect.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/Window/GlResource.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/Window/Export.hpp:
 
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileWriter.hpp:
+
 /usr/x86_64-w64-mingw32/include/SFML/Window/Event.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/Cursor.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/Window/WindowStyle.hpp:
 
@@ -644,17 +700,9 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/SFML/Window.hpp:
 
-/usr/x86_64-w64-mingw32/include/vadefs.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/ctype_inline.h:
-
 /usr/x86_64-w64-mingw32/include/SFML/System/Utf.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/System/String.inl:
-
-/usr/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/cpu_defines.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/basic_string.h:
 
@@ -662,121 +710,39 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/fstream.tcc:
 
-/usr/x86_64-w64-mingw32/include/SFML/Window/VideoMode.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/ThreadLocalPtr.inl:
-
 /usr/x86_64-w64-mingw32/include/SFML/System/ThreadLocal.hpp:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/uses_allocator.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/exception.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/os_defines.h:
+/usr/x86_64-w64-mingw32/include/SFML/System/Vector3.inl:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/istream.tcc:
+/usr/x86_64-w64-mingw32/include/sys/types.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Drawable.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/System/Thread.hpp:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stddef.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/ThreadLocalPtr.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/VertexArray.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Glyph.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets_nonio.tcc:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/Clock.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/FileInputStream.hpp:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/syslimits.h:
-
-/usr/x86_64-w64-mingw32/include/_timeval.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/cmath:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/Joystick.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/atomic_word.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/ctime:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/cerrno:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Font.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/ConvexShape.hpp:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/exp_integral.tcc:
 
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/CircleShape.hpp:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_map.h:
+/usr/x86_64-w64-mingw32/include/_mingw_stat64.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/range_access.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/ostream.tcc:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h:
+/usr/x86_64-w64-mingw32/include/SFML/System/Sleep.hpp:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/codecvt.h:
+/usr/x86_64-w64-mingw32/include/sec_api/wchar_s.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/BlendMode.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/System/NonCopyable.hpp:
 
-/usr/x86_64-w64-mingw32/include/wchar.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/system_error:
 
-/usr/x86_64-w64-mingw32/include/corecrt_startup.h:
+/usr/x86_64-w64-mingw32/include/SFML/Window/WindowHandle.hpp:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/PrimitiveType.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/Window/Sensor.hpp:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cpp_type_traits.h:
-
-/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/collision.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bit:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/Window.hpp:
-
-/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/gamestate.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/Vector3.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/modified_bessel_func.tcc:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Export.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/limits:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/limits.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Glsl.hpp:
-
-/usr/x86_64-w64-mingw32/include/pthread_unistd.h:
-
-/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_classes.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/ext/numeric_traits.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/Thread.inl:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/ios_base.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/Config.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/basic_string.tcc:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/postypes.h:
-
-/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets.tcc:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_classes.tcc:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/error_constants.h:
+/usr/x86_64-w64-mingw32/include/SFML/System/MemoryInputStream.hpp:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/concept_check.h:
 
@@ -786,7 +752,179 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/legendre_function.tcc:
 
+/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/syslimits.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/Vector2.inl:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Glsl.inl:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/cstddef:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/FileInputStream.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/Clock.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/exception_ptr.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/System.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBufferRecorder.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/Export.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/RenderTexture.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/Sound.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/Lock.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/InputSoundFile.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundSource.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Shape.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/initializer_list:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/new_allocator.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/refwrap.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_vector.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/utility.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics.hpp:
+
+/usr/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/AlResource.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_map.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/range_access.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cpp_type_traits.h:
+
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/collision.h:
+
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/sprite.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/Err.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/Mutex.hpp:
+
+/usr/x86_64-w64-mingw32/include/swprintf.inl:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundRecorder.hpp:
+
+/usr/x86_64-w64-mingw32/include/errno.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/cwctype:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Drawable.hpp:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stddef.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/istream.tcc:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/ios_base.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Config.hpp:
+
+/usr/x86_64-w64-mingw32/include/pthread_unistd.h:
+
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundStream.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Color.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/vector:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Text.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bit:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/Window.hpp:
+
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/gamestate.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/limits.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Glsl.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/basic_string.tcc:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/postypes.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/codecvt.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/BlendMode.hpp:
+
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/ThreadLocalPtr.inl:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/VideoMode.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/Cursor.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.inl:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/requires_hosted.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/Listener.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/PrimitiveType.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Vertex.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/fstream:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBuffer.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Texture.hpp:
+
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/RectangleShape.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/Mouse.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileReader.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stream_iterator.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/Touch.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/basic_file.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Image.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/cerrno:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Font.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/ConvexShape.hpp:
+
+/usr/x86_64-w64-mingw32/include/_timeval.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/cmath:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/Joystick.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/atomic_word.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/Vector3.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/modified_bessel_func.tcc:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Export.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Glyph.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets_nonio.tcc:
 
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/system.h:
 
@@ -796,51 +934,29 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/bessel_function.tcc:
 
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_set.h:
+
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/Rect.inl:
+
+/usr/x86_64-w64-mingw32/include/SFML/System/String.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Window/WindowBase.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/map:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/random:
 
-/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/sprite.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/time_members.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/System/Mutex.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/RenderTarget.hpp:
 
-/usr/x86_64-w64-mingw32/include/SFML/System/Err.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/cstddef:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/Mouse.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/Vulkan.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Rect.hpp:
-
-/usr/x86_64-w64-mingw32/include/corecrt.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/Touch.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Glsl.inl:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/Vector2.inl:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/Vector3.inl:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/basic_file.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Image.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/RenderWindow.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/WindowHandle.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/Sensor.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/MemoryInputStream.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/Shader.hpp:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_heap.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cxxabi_init_exception.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/char_traits.h:
 
@@ -848,29 +964,21 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_uninitialized.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Shape.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_vector.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/utility.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Color.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/vector:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Text.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/String.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/map:
-
-/usr/x86_64-w64-mingw32/include/SFML/Window/WindowBase.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Texture.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/Lock.hpp:
-
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/VertexBuffer.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_classes.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/functional_hash.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/erase_if.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/gthr.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/basic_ios.h:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_multiset.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_iterator.h:
 
@@ -878,33 +986,35 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/random.tcc:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Vertex.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/Audio/Music.hpp:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/fstream:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cxxabi_init_exception.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/RenderTarget.hpp:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/exception_defines.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/time_members.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/functexcept.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/System.hpp:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/cwchar:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/RenderTexture.hpp:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/hash_bytes.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/System/Export.hpp:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/limits:
 
-/usr/x86_64-w64-mingw32/include/sec_api/wchar_s.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_conv.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/System/NonCopyable.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/System/Thread.inl:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/system_error:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/ext/numeric_traits.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/System/Sleep.hpp:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets.h:
 
-/usr/x86_64-w64-mingw32/include/sys/types.h:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/error_constants.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/System/Thread.hpp:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_classes.tcc:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/exp_integral.tcc:
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_facets.tcc:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/ctime:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/localefwd.h:
 
@@ -920,12 +1030,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/hypergeometric.tcc:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/initializer_list:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/refwrap.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/new_allocator.h:
-
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/ostream_insert.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/ptr_traits.h:
@@ -933,8 +1037,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/random.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_construct.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/requires_hosted.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_pair.h:
 
@@ -947,8 +1049,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 /usr/x86_64-w64-mingw32/include/locale.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/tr1/riemann_zeta.tcc:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++io.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_function.h:
 
@@ -964,17 +1064,19 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_multimap.h:
 
+/usr/x86_64-w64-mingw32/include/SFML/System/ThreadLocalPtr.hpp:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/VertexArray.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/set:
+
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_numeric.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/cstdlib:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_tree.h:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stream_iterator.h:
-
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/streambuf.tcc:
-
-/usr/x86_64-w64-mingw32/include/corecrt_wstdlib.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/streambuf_iterator.h:
 
@@ -985,8 +1087,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/predefined_ops.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stringfwd.h:
-
-/usr/x86_64-w64-mingw32/include/corecrt_stdio_config.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/uniform_int_dist.h:
 
@@ -1018,13 +1118,11 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/streambuf:
 
-/usr/x86_64-w64-mingw32/include/errno.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/cwctype:
-
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/basic_ios.tcc:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/debug/assertions.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Audio/Export.hpp:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/exception:
 
@@ -1041,8 +1139,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/iosfwd:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/iostream:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/opt_random.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/istream:
 
@@ -1094,22 +1190,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/ext/alloc_traits.h:
 
+/usr/x86_64-w64-mingw32/include/SFML/Audio/OutputSoundFile.hpp:
+
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/type_traits:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++allocator.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++config.h:
-
-/usr/x86_64-w64-mingw32/include/SFML/System/Utf.inl:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++locale.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/ctype_base.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/basic_ios.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/gthr.h:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/messages_members.h:
-
-/usr/x86_64-w64-mingw32/include/crtdefs.h:

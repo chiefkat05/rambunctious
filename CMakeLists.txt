@@ -5,11 +5,11 @@ project(main)
 add_executable(main ${CMAKE_SOURCE_DIR}/sources/main.cpp ${CMAKE_SOURCE_DIR}/sources/sprite.cpp)
 
 if (LINUX)
-target_link_libraries(main sfml-graphics sfml-window sfml-system)
+target_link_libraries(main sfml-audio sfml-graphics sfml-window vorbisenc vorbisfile vorbis ogg sfml-system)
 endif()
 
 if (WIN32)
-target_link_libraries(main sfml-graphics sfml-window sfml-system opengl32)
+target_link_libraries(main sfml-audio sfml-graphics sfml-window sfml-system opengl32 openal32 vorbisenc vorbisfile vorbis ogg)
 endif()
 
 set(CMAKE_CXX_FLAGS "-O2")
