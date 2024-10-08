@@ -6,6 +6,7 @@
 #include "sprite.h"
 #include "collision.h"
 #include "dungeon.h"
+#include "soundeffects.h"
 
 const unsigned int att_limit = 4;
 const unsigned int class_att_limit = 52;
@@ -16,6 +17,8 @@ const unsigned int animation_limit = 24;
 const unsigned int target_limit = 12;
 
 extern float massScale, massYOffset;
+
+soundhandler soundplayer;
 
 enum STATUS
 {
@@ -210,6 +213,8 @@ struct character
             attackTimer = _class.attackSpeed;
             _class.abilities_list[nextAbility].updateTargets(new character *{target}, 1);
             _class.abilities_list[nextAbility].use(_class.attackDamage, &_class.abilities_list[0], this);
+            soundplayer.load("../snd/sfx/quickpunch.mp3");
+            soundplayer.play();
             target->takeHit(delta_time); // this needs to be a reference to the attack->targets, not positional target. Also, attack->targets needs to be able to target anybody within range of the attack, capped at attack->targetcount
             attacking = false;
             lastAbility = nextAbility;
@@ -219,8 +224,6 @@ struct character
                 experiencePoints += target->_class.maxHP / 10;
             }
         }
-        // figure out when an ability should be used. Last ability should be updated when an ability is used (or one line before it's set so that you can set it to the ability that's about to be overridden).
-        // There should be an overridable function (boolean?) that is checked once a move is used, and then that move will be set as the nextAbility and used next.
     }
 
     void Update(float delta_time, float screenOffsetX, float screenOffsetY)

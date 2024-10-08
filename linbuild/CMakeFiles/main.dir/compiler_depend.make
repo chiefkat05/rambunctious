@@ -6,6 +6,7 @@ CMakeFiles/main.dir/sources/main.cpp.o: /home/chiefkat/Documents/vscodeprojects/
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/gamestate.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h \
+  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/soundeffects.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/sprite.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/system.h \
   /usr/include/SFML/Audio.hpp \
@@ -811,6 +812,8 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/c++/14.2.1/bits/version.h:
 
+/usr/include/c++/14.2.1/bits/uses_allocator_args.h:
+
 /usr/include/bits/mathcalls-helper-functions.h:
 
 /usr/include/c++/14.2.1/bits/stl_multiset.h:
@@ -923,6 +926,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/SFML/System/Mutex.hpp:
 
+/usr/include/c++/14.2.1/tr1/poly_hermite.tcc:
+
+/usr/include/SFML/System/Err.hpp:
+
 /usr/include/SFML/Window/WindowBase.hpp:
 
 /usr/include/bits/math-vector.h:
@@ -981,19 +988,11 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/SFML/System/Thread.inl:
 
-/usr/include/SFML/Graphics/Color.hpp:
-
-/usr/include/SFML/System.hpp:
-
 /usr/include/stdio.h:
 
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/collision.h:
 
 /usr/include/bits/wordsize.h:
-
-/usr/include/bits/pthreadtypes.h:
-
-/usr/include/c++/14.2.1/bits/stl_iterator_base_funcs.h:
 
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h:
 
@@ -1009,11 +1008,11 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/c++/14.2.1/bits/nested_exception.h:
 
-/usr/include/c++/14.2.1/tr1/poly_hermite.tcc:
-
-/usr/include/SFML/System/Err.hpp:
-
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h:
+
+/usr/include/SFML/Graphics/Sprite.hpp:
+
+/usr/include/SFML/Graphics/Export.hpp:
 
 /usr/include/c++/14.2.1/iosfwd:
 
@@ -1041,6 +1040,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/bits/locale.h:
 
+/usr/include/SFML/System.hpp:
+
+/usr/include/SFML/Graphics/Color.hpp:
+
 /usr/include/SFML/Graphics/ConvexShape.hpp:
 
 /usr/include/c++/14.2.1/bits/vector.tcc:
@@ -1050,10 +1053,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/c++/14.2.1/bits/memoryfwd.h:
 
 /usr/include/c++/14.2.1/bits/requires_hosted.h:
-
-/usr/include/SFML/Graphics/Export.hpp:
-
-/usr/include/SFML/Graphics/Sprite.hpp:
 
 /usr/include/c++/14.2.1/vector:
 
@@ -1088,6 +1087,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/bits/types/struct_tm.h:
 
 /usr/include/SFML/Graphics/Rect.inl:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/c++/14.2.1/bits/stl_iterator_base_funcs.h:
 
 /usr/include/SFML/Graphics/RectangleShape.hpp:
 
@@ -1162,8 +1165,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/locale.h:
 
 /usr/include/c++/14.2.1/bits/uniform_int_dist.h:
-
-/usr/include/c++/14.2.1/bits/uses_allocator_args.h:
 
 /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/gthr.h:
 
@@ -1398,6 +1399,8 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/c++/14.2.1/cstdlib:
 
 /usr/include/c++/14.2.1/bits/stl_algobase.h:
+
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/soundeffects.h:
 
 /usr/include/c++/14.2.1/bits/stl_algo.h:
 
