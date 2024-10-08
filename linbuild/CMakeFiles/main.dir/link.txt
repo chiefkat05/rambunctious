@@ -1,1 +1,1 @@
-/usr/bin/c++ -O2 CMakeFiles/main.dir/sources/main.cpp.o CMakeFiles/main.dir/sources/sprite.cpp.o -o main  -lsfml-audio -lsfml-graphics -lsfml-window -lvorbisenc -lvorbisfile -lvorbis -logg -lsfml-system
+/usr/bin/c++ -O2 CMakeFiles/main.dir/sources/main.cpp.o CMakeFiles/main.dir/sources/sprite.cpp.o -o main  -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
