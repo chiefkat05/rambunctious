@@ -6,6 +6,7 @@ CMakeFiles/main.dir/sources/main.cpp.obj: /home/chiefkat/Documents/vscodeproject
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/gamestate.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h \
+  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/soundeffects.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/sprite.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/system.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13.1.0/include/limits.h \
@@ -664,8 +665,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/algorithm:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cxxabi_forced.h:
-
 /usr/x86_64-w64-mingw32/include/_mingw_off_t.h:
 
 /usr/x86_64-w64-mingw32/include/_mingw_mac.h:
@@ -774,6 +773,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/RenderTexture.hpp:
 
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/soundeffects.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/VertexBuffer.hpp:
+
 /usr/x86_64-w64-mingw32/include/SFML/Audio/Sound.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/System/Lock.hpp:
@@ -799,6 +802,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 /usr/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h:
 
 /usr/x86_64-w64-mingw32/include/SFML/Audio/AlResource.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/basic_file.h:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Image.hpp:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_map.h:
 
@@ -838,14 +845,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundStream.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Color.hpp:
-
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/vector:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Text.hpp:
-
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bit:
 
 /usr/x86_64-w64-mingw32/include/SFML/Window/Window.hpp:
@@ -884,11 +883,11 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/fstream:
 
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/RectangleShape.hpp:
+
 /usr/x86_64-w64-mingw32/include/SFML/Audio/SoundBuffer.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/Graphics/Texture.hpp:
-
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/RectangleShape.hpp:
 
 /usr/x86_64-w64-mingw32/include/SFML/Window/Mouse.hpp:
 
@@ -898,9 +897,13 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/SFML/Window/Touch.hpp:
 
-/usr/x86_64-w64-mingw32/include/c++/13.1.0/x86_64-w64-mingw32/bits/basic_file.h:
+/usr/x86_64-w64-mingw32/include/SFML/Audio/SoundStream.hpp:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/Image.hpp:
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Color.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/vector:
+
+/usr/x86_64-w64-mingw32/include/SFML/Graphics/Text.hpp:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/cerrno:
 
@@ -964,8 +967,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/stl_uninitialized.h:
 
-/usr/x86_64-w64-mingw32/include/SFML/Graphics/VertexBuffer.hpp:
-
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/locale_classes.h:
 
 /usr/x86_64-w64-mingw32/include/SFML/Audio.hpp:
@@ -987,6 +988,8 @@ CMakeFiles/main.dir/sources/sprite.cpp.obj: /home/chiefkat/Documents/vscodeproje
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/random.tcc:
 
 /usr/x86_64-w64-mingw32/include/SFML/Audio/Music.hpp:
+
+/usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cxxabi_forced.h:
 
 /usr/x86_64-w64-mingw32/include/c++/13.1.0/bits/cxxabi_init_exception.h:
 
