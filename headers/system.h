@@ -384,7 +384,7 @@ struct game_system
     character *characters[entity_limit];
     sprite *sortedSprites[entity_limit];
     int characterCount = 0;
-    bool paused = true;
+    bool paused = false;
     terrain ground, air;
 
     void Add(player *p)

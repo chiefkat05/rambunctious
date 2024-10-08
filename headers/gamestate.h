@@ -113,6 +113,8 @@ enum game_state
     MENU_SCREEN,
     CHARACTER_CREATION_SCREEN,
     DUNGEON_SCREEN,
+    LOSE_SCREEN,
+    WIN_SCREEN,
     state_total_count
 };
 
@@ -168,6 +170,12 @@ void characterMenu(player *player, dungeon *d, int argv)
     }
     player->selected[argv] = true;
     player->allies[argv].visual->rect.setColor(sf::Color(255, 255, 255, 170));
+}
+void gotoCharacter(player *player, dungeon *floor, int argv)
+{
+    floor->screenPositionX = -player->allies[argv].posX + 128.0f;
+    floor->screenPositionY = -player->allies[argv].posY + 64.0f;
+    // floor->screenPositionY = player->allies[argv].posY;
 }
 
 void characterAbility(player *player, dungeon *d, int argv)

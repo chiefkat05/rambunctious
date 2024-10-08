@@ -282,6 +282,7 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
             gui_data.elements.push_back(ui_element(UI_IMAGE, temp_path.c_str(), 225.0f, 6.0f + i * 20.0f, 12.0f, 14.0f, 1, 1, nullFunc));
 
             gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, 1, 1, characterMenu, &mainP, nullptr, i));
+            gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/goto_character.png", 218.0f, 0.0f + i * 20.0f, 7.0f, 7.0f, 1, 1, gotoCharacter, &mainP, &floor, i));
             gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", 238.0f, 9.0f + i * 20.0f, 16.0f, 4.0f, 15, 1, nullFunc, nullptr, nullptr, 0, &hpAmounts[i]));
             gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/experience.png", 230.0f, 20.0f + i * 20.0f, 24.0f, 2.0f, 25, 1, nullFunc,
                                                    nullptr, nullptr, 0, &expAmounts[i]));
@@ -297,6 +298,12 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
                 nullptr, nullptr, nullptr, 0, &abilitySelection[j]));
         }
         break;
+    case LOSE_SCREEN:
+        gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/game_over.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
+        break;
+    case WIN_SCREEN:
+        gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/victory.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
+        break;
     default:
         break;
     }
@@ -306,7 +313,7 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
     prevState = state;
 }
 
-bool pauseKeyHeld;
+bool pauseKeyHeld, uiKeyHeld, showUI = true;
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(256, 128), "rambunctious_alpha_0.0");
@@ -390,9 +397,6 @@ int main()
 
         mouseUpdate();
 
-        // yomi hustle time system (everything should be linked)
-        // also pause button (probably with space key)
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             window.close();
 
@@ -416,6 +420,7 @@ int main()
             unitControl(game, mainPlayer, window, &currentDungeon);
 
             mainPlayer.firstUnitSelected = -1;
+            int totalPlayerHP = 0;
             for (int i = 0; i < character_limit; ++i)
             {
                 if (mainPlayer.firstUnitSelected == -1 && mainPlayer.selected[i])
@@ -425,10 +430,17 @@ int main()
 
                 if (mainPlayer.allies[i].visual == nullptr)
                     continue;
+
+                totalPlayerHP += mainPlayer.allies[i].hp;
+
                 hpAmounts[i] = 14 - static_cast<int>((static_cast<float>(mainPlayer.allies[i].hp) / static_cast<float>(mainPlayer.allies[i]._class.maxHP)) * 14.0f);
                 expAmounts[i] = 24 - static_cast<int>((static_cast<float>(mainPlayer.allies[i].experiencePoints) /
                                                        static_cast<float>(mainPlayer.allies[i]._class.experienceToLvlUp)) *
                                                       24.0f);
+            }
+            if (totalPlayerHP <= 0)
+            {
+                state = LOSE_SCREEN;
             }
             for (int i = 0; i < att_limit; ++i)
             {
@@ -439,11 +451,17 @@ int main()
                 }
             }
 
+            int totalEnemyHP = 0;
             for (int i = 0; i < game.characterCount; ++i)
             {
                 if (game.characters[i]->visual == nullptr)
                 {
                     continue;
+                }
+
+                if (game.characters[i]->id == CH_MONSTER)
+                {
+                    totalEnemyHP += game.characters[i]->hp;
                 }
 
                 gui_data.elements[entityHP_UI_Index + i].visual.Put(game.characters[i]->visual->rect.getPosition().x, game.characters[i]->visual->rect.getPosition().y);
@@ -452,8 +470,24 @@ int main()
                 // window.draw(game.characters[i]->visual->rect);
                 window.draw(game.sortedSprites[i]->rect);
             }
+            if (totalEnemyHP <= 0)
+            {
+                state = WIN_SCREEN;
+            }
         }
-        gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);
+        if (!uiKeyHeld && sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+        {
+            showUI = !showUI;
+        }
+        uiKeyHeld = false;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+        {
+            uiKeyHeld = true;
+        }
+        if (showUI)
+        {
+            gui_data.screenDraw(&window, mouseX, mouseY, mousePressed, mouseReleased, delta_time);
+        }
 
         resolutionBlinderTop.Put(0.0f, -massYOffset / massScale);
         resolutionBlinderTop.rect.setScale(256.0f, massYOffset / massScale / resolutionBlinderTop.spriteH);
