@@ -9,6 +9,8 @@ float massScale = 1.0f, massYOffset = 0.0f;
 float delta_time = 0.0f;
 bool buttonHovered = false;
 
+void dungeonInit(game_system &game, dungeon &dg);
+
 void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon *floor)
 {
     static sprite sTopLeft("../img/ui/unit-control/playerselect-c.png", 0.0f, 0.0f, 8.0f, 8.0f, 1, 1);
@@ -90,11 +92,11 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
     {
         for (int i = 0; i < character_limit; ++i)
         {
-            if (!p.selected[i] || p.allies[i].visual == nullptr)
+            if (!p.selected[i] || p.allies[i].visual.empty)
                 continue;
 
             p.allies[i].target = nullptr;
-            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x - 1.0f * massScale, p.allies[i].visual->rect.getPosition().y, floor);
+            p.allies[i].MoveTo(p.allies[i].visual.rect.getPosition().x - 1.0f * massScale, p.allies[i].visual.rect.getPosition().y, floor);
 
             // Options:
 
@@ -108,33 +110,33 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
     {
         for (int i = 0; i < character_limit; ++i)
         {
-            if (!p.selected[i] || p.allies[i].visual == nullptr)
+            if (!p.selected[i] || p.allies[i].visual.empty)
                 continue;
 
             p.allies[i].target = nullptr;
-            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x + 1.0f * massScale, p.allies[i].visual->rect.getPosition().y, floor);
+            p.allies[i].MoveTo(p.allies[i].visual.rect.getPosition().x + 1.0f * massScale, p.allies[i].visual.rect.getPosition().y, floor);
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
         for (int i = 0; i < character_limit; ++i)
         {
-            if (!p.selected[i] || p.allies[i].visual == nullptr)
+            if (!p.selected[i] || p.allies[i].visual.empty)
                 continue;
 
             p.allies[i].target = nullptr;
-            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x, p.allies[i].visual->rect.getPosition().y - 1.0f * massScale, floor);
+            p.allies[i].MoveTo(p.allies[i].visual.rect.getPosition().x, p.allies[i].visual.rect.getPosition().y - 1.0f * massScale, floor);
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
         for (int i = 0; i < character_limit; ++i)
         {
-            if (!p.selected[i] || p.allies[i].visual == nullptr)
+            if (!p.selected[i] || p.allies[i].visual.empty)
                 continue;
 
             p.allies[i].target = nullptr;
-            p.allies[i].MoveTo(p.allies[i].visual->rect.getPosition().x, p.allies[i].visual->rect.getPosition().y + 1.0f * massScale, floor);
+            p.allies[i].MoveTo(p.allies[i].visual.rect.getPosition().x, p.allies[i].visual.rect.getPosition().y + 1.0f * massScale, floor);
         }
     }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
@@ -161,7 +163,7 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
         // two for-loops seems redundant, please optimize
         for (int i = 0; i < character_limit; ++i)
         {
-            if (!p.selected[i] || p.allies[i].visual == nullptr)
+            if (!p.selected[i] || p.allies[i].visual.empty)
                 continue;
 
             averageX += p.allies[i].posX;
@@ -172,7 +174,7 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
         averageY /= selectedCount;
         for (int i = 0; i < character_limit; ++i)
         {
-            if (!p.selected[i] || p.allies[i].visual == nullptr)
+            if (!p.selected[i] || p.allies[i].visual.empty)
                 continue;
 
             float offsetX = p.allies[i].posX - averageX;
@@ -182,7 +184,7 @@ void unitControl(game_system &game, player &p, sf::RenderWindow &window, dungeon
                                mouseY * massScale + offsetY - massYOffset * massScale, floor);
 
             p.allies[i].target = targeted;
-            if (targeted != nullptr) // attack selection is messed up with scrolled level!!!
+            if (targeted != nullptr)
             {
                 sAttack.Put(mouseX * massScale - 8.0f, mouseY * massScale - massYOffset * massScale - 16.0f);
                 window.draw(sAttack.rect);
@@ -225,6 +227,7 @@ int entityHP[entity_limit];
 int entityHP_UI_Index = 0;
 int expAmounts[character_limit];
 int abilitySelection[att_limit];
+int abilityImageID[att_limit];
 // edit all guis here
 void menuData(game_system &mainG, player &mainP, dungeon &floor)
 {
@@ -257,27 +260,30 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
         gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/buttons/play.png", 40.0f, 40.0f, 16.0f, 16.0f, 1, 1, startGame));
         break;
     case DUNGEON_SCREEN:
+        dungeonInit(mainG, floor);
         if (!mainG.game_music.openFromFile("../snd/mus/Blue-1.mp3"))
         {
             std::cout << "failed to load ../snd/mus/Blue-1.mp3\n";
         }
         gui_data.background = sprite("../img/ui/backgrounds/dungeon.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1);
-        gui_data.background.rect.setColor(sf::Color(255, 255, 255, 0));
+        gui_data.background.rect.setColor(sf::Color(255, 255, 255, 255));
+        // gui_data.background.rect.setPosition(-500.0f, -500.0f);
+        gui_data.background.rect.setTextureRect(sf::IntRect(0, 0, 3200, 128));
 
         entityHP_UI_Index = gui_data.elements.size();
         for (int i = 0; i < mainG.characterCount; ++i)
         {
-            if (mainG.characters[i]->visual == nullptr)
+            if (mainG.characters[i]->visual.empty)
                 continue;
 
-            gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", mainG.characters[i]->posX, mainG.characters[i]->posY,
-                                                   16.0f, 4.0f, 15, 1, nullFunc, nullptr, nullptr, 0, &entityHP[i]));
+            // gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", mainG.characters[i]->posX, mainG.characters[i]->posY,
+            //    16.0f, 4.0f, 15, 1, nullFunc, nullptr, nullptr, 0, &entityHP[i]));
         }
 
         gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/dungeon_ui.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
         for (int i = 0; i < character_limit; ++i)
         {
-            if (mainP.allies[i].visual == nullptr)
+            if (mainP.allies[i].visual.empty)
                 continue;
 
             mainP.allies[i].posX = floor.spawnLocationX;
@@ -285,33 +291,33 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
             mainP.allies[i].walkToX = floor.spawnLocationX;
             mainP.allies[i].walkToY = floor.spawnLocationY + i * 16.0f;
 
-            temp_path = std::string("../img/ui/icons/" + mainP.allies[i]._class.name + ".png");
+            // temp_path = std::string("../img/ui/icons/" + mainP.allies[i]._class.name + ".png");
 
-            gui_data.elements.push_back(ui_element(UI_IMAGE, temp_path.c_str(), 225.0f, 6.0f + i * 20.0f, 12.0f, 14.0f, 1, 1, nullFunc));
+            // gui_data.elements.push_back(ui_element(UI_IMAGE, temp_path.c_str(), 225.0f, 6.0f + i * 20.0f, 12.0f, 14.0f, 1, 1, nullFunc));
 
-            gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, 1, 1, characterMenu, &mainP, nullptr, i));
-            gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/goto_character.png", 218.0f, 0.0f + i * 20.0f, 7.0f, 7.0f, 1, 1, gotoCharacter, &mainP, &floor, i));
-            gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", 238.0f, 9.0f + i * 20.0f, 16.0f, 4.0f, 15, 1, nullFunc, nullptr, nullptr, 0, &hpAmounts[i]));
-            gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/experience.png", 230.0f, 20.0f + i * 20.0f, 24.0f, 2.0f, 25, 1, nullFunc,
-                                                   nullptr, nullptr, 0, &expAmounts[i]));
+            // gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/profile_card.png", 224.0f, 5.0f + i * 20.0f, 32.0f, 16.0f, 1, 1, characterMenu, &mainP, nullptr, i));
+            gui_data.elements.push_back(ui_element(UI_CLICKABLE, "../img/ui/goto_character.png", 120.0f, 100.0f + i * 20.0f, 7.0f, 7.0f, 1, 1, gotoCharacter, &mainP, &floor, i));
+            // gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/health.png", 238.0f, 9.0f + i * 20.0f, 16.0f, 4.0f, 15, 1, nullFunc, nullptr, nullptr, 0, &hpAmounts[i]));
+            // gui_data.elements.push_back(ui_element(UI_VALUEISFRAME, "../img/ui/experience.png", 150.0f, 100.0f + i * 20.0f, 24.0f, 2.0f, 25, 1, nullFunc,
+            //    nullptr, nullptr, 0, &expAmounts[i]));
         }
 
-        for (int j = 0; j < att_limit; ++j)
-        {
-            gui_data.elements.push_back(ui_element(
-                UI_CLICKABLE, "../img/ui/ability_card.png", 2.0f + j * 26.0f, 100.0f, 24.0f, 24.0f, 2, 1, characterAbility, &mainP, nullptr, j));
+        // for (int j = 0; j < att_limit; ++j)
+        // {
+        //     gui_data.elements.push_back(ui_element(
+        //         UI_CLICKABLE, "../img/ui/ability_card.png", 2.0f + j * 26.0f, 100.0f, 24.0f, 24.0f, 2, 1, characterAbility, &mainP, nullptr, j));
 
-            gui_data.elements.push_back(ui_element(
-                UI_VALUEISFRAME, "../img/ui/ability_select.png", 2.0f + j * 26.0f, 100.0f, 24.0f, 24.0f, 2, 1,
-                nullptr, nullptr, nullptr, 0, &abilitySelection[j]));
-        }
+        //     gui_data.elements.push_back(ui_element(
+        //         UI_VALUEISFRAME, "../img/ui/ability_select.png", 2.0f + j * 26.0f, 100.0f, 24.0f, 24.0f, 2, 1,
+        //         nullptr, nullptr, nullptr, 0, &abilitySelection[j]));
+        // }
         break;
     case LOSE_SCREEN:
-        if (!mainG.game_music.openFromFile("../snd/mus/fail.mp3"))
-        {
-            std::cout << "failed to load ../snd/mus/fail.mp3\n";
-        }
-        gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/game_over.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
+        // if (!mainG.game_music.openFromFile("../snd/mus/fail.mp3"))
+        // {
+        //     std::cout << "failed to load ../snd/mus/fail.mp3\n";
+        // }
+        // gui_data.elements.push_back(ui_element(UI_IMAGE, "../img/ui/game_over.png", 0.0f, 0.0f, 256.0f, 128.0f, 1, 1, nullFunc));
         break;
     case WIN_SCREEN:
         if (!mainG.game_music.openFromFile("../snd/mus/win.mp3"))
@@ -324,12 +330,30 @@ void menuData(game_system &mainG, player &mainP, dungeon &floor)
         break;
     }
 
-    gui_data.menuBG = animation(&gui_data.background, 0, gui_data.background.framesX - 1, 18.0f);
+    // gui_data.menuBG = animation(&gui_data.background, 0, gui_data.background.framesX - 1, 18.0f);
 
     prevState = state;
 }
 
-bool pauseKeyHeld, uiKeyHeld, showUI = true;
+bool pauseKeyHeld = false, uiKeyHeld = false, showUI = true;
+void playerInit(player &pl, game_system &game)
+{
+    ch_class walker_class("walker", 10, 1, 10.0f, 100.0f, 100.0f, 100, ability_null);
+
+    pl.allies[0] = character("../img/classes/walker/traveller.png", 120.0f, 40.0f, 16.0f, 16.0f, 1, 1, CH_PLAYER, walker_class);
+
+    pl.allies[0].SetAnimation(ANIM_IDLE, 0, 8, 150.0f);
+    pl.allies[0].SetAnimation(ANIM_HURT, 9, 14, 150.0f);
+    pl.allies[0].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
+
+    game.Add(&pl);
+}
+void dungeonInit(game_system &game, dungeon &dg)
+{
+    dg = dungeon("../img/ui/empty.png", 64.0f, 64.0f, massScale, massYOffset);
+    dg.readRoomFile("../dungeons/road.sdf", massScale, massYOffset);
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(256, 128), "rambunctious_alpha_0.0");
@@ -337,49 +361,13 @@ int main()
 
     window.setView(screen);
 
-    sprite brawler("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6); // animation for walking brawler, simple code for looking either way. Animations for enemy, simple code for spawning them in the .sdf file. Animations for icons. Overhaul art with simplistic 4/8-color style
-    sprite brawler2("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6);
-    sprite brawler3("../img/classes/violent/brawler.png", 120.0f, 40.0f, 32.0f, 32.0f, 7, 6);
-
-    ch_class brawler_class("brawler", 20, 7, 8.0f, 60.0f, 200.0f, 150, ability_simpleMelee);
-
-    brawler_class.setAbility(0, ability_brawler_hook, 2);
-    brawler_class.setAbility(1, ability_brawler_right_hook, 1.1f, 10);
-    ch_class meg("megdrer", 140, 2, 14.5f, 120.0f, 400.0f, 40, ability_simpleMelee);
-
-    dungeon currentDungeon("../img/tiles/dungeons/blue/blue.png", 64.0f, 64.0f, massScale, massYOffset);
-    currentDungeon.readRoomFile("../dungeons/blue.sdf", massScale, massYOffset);
-    player mainPlayer;
-    mainPlayer.allies[0] = character(&brawler, CH_PLAYER, brawler_class);
-    mainPlayer.allies[1] = character(&brawler2, CH_PLAYER, brawler_class);
-    mainPlayer.allies[2] = character(&brawler3, CH_PLAYER, brawler_class);
-
+    game_system game;
     sf::Clock sfClock;
     sf::Time sfTime;
 
-    mainPlayer.allies[0].SetAnimation(ANIM_IDLE, 0, 8, 150.0f);
-    mainPlayer.allies[0].SetAnimation(ANIM_HURT, 9, 14, 150.0f);
-    mainPlayer.allies[0].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
-    mainPlayer.allies[0].SetAnimation(ANIM_ABILITY_1, 23, 41, 300.0f);
-    mainPlayer.allies[1].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
-    mainPlayer.allies[1].SetAnimation(ANIM_HURT, 9, 14, 150.0f);
-    mainPlayer.allies[1].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
-    mainPlayer.allies[1].SetAnimation(ANIM_ABILITY_1, 23, 41, 300.0f);
-    mainPlayer.allies[2].SetAnimation(ANIM_IDLE, 0, 5, 150.0f);
-    mainPlayer.allies[2].SetAnimation(ANIM_HURT, 9, 14, 150.0f);
-    mainPlayer.allies[2].SetAnimation(ANIM_ABILITY_0, 15, 21, 300.0f);
-    mainPlayer.allies[2].SetAnimation(ANIM_ABILITY_1, 23, 41, 300.0f);
-
-    game_system game;
-    game.Add(&mainPlayer);
-
-    character dungeonEnemies[currentDungeon.enemyCount];
-    for (int i = 0; i < currentDungeon.enemyCount; ++i)
-    {
-        dungeonEnemies[i] = character(&currentDungeon.enemies[i], CH_MONSTER, meg); // the 'meg' class part of this needs to be switch statemented into multiple classes
-        dungeonEnemies[i].SetAnimation(ANIM_IDLE, 0, 0, 150.0f);
-        game.Add(&dungeonEnemies[i]);
-    }
+    dungeon mainDungeon;
+    player mainPlayer;
+    playerInit(mainPlayer, game);
 
     sprite resolutionBlinderTop("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
     sprite resolutionBlinderBottom("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
@@ -426,18 +414,20 @@ int main()
 
         window.clear();
 
-        menuData(game, mainPlayer, currentDungeon);
+        menuData(game, mainPlayer, mainDungeon);
         game.handleMusic();
-        if (state == DUNGEON_SCREEN)
-        {
-            currentDungeon.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
 
-            currentDungeon.draw(&window);
-            game.update(currentDungeon, delta_time);
-            unitControl(game, mainPlayer, window, &currentDungeon);
+        gui_data.background.rect.setPosition(mainDungeon.screenPositionX, mainDungeon.screenPositionY);
+        window.draw(gui_data.background.rect);
+        if (state == DUNGEON_SCREEN && mainDungeon.dungeonInitialized)
+        {
+            mainDungeon.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
+            std::cout << mainPlayer.allies[0].visual.empty << ", " << mainPlayer.allies[0].visual.path << ", " << mainPlayer.allies[0].posX << "\n";
+
+            mainDungeon.draw(&window);
+            game.update(mainDungeon, delta_time);
 
             mainPlayer.firstUnitSelected = -1;
-            int totalPlayerHP = 0;
             for (int i = 0; i < character_limit; ++i)
             {
                 if (mainPlayer.firstUnitSelected == -1 && mainPlayer.selected[i])
@@ -445,19 +435,12 @@ int main()
                     mainPlayer.firstUnitSelected = i;
                 }
 
-                if (mainPlayer.allies[i].visual == nullptr)
+                if (mainPlayer.allies[i].visual.empty)
                     continue;
 
-                totalPlayerHP += mainPlayer.allies[i].hp;
-
-                hpAmounts[i] = 14 - static_cast<int>((static_cast<float>(mainPlayer.allies[i].hp) / static_cast<float>(mainPlayer.allies[i]._class.maxHP)) * 14.0f);
                 expAmounts[i] = 24 - static_cast<int>((static_cast<float>(mainPlayer.allies[i].experiencePoints) /
                                                        static_cast<float>(mainPlayer.allies[i]._class.experienceToLvlUp)) *
                                                       24.0f);
-            }
-            if (totalPlayerHP <= 0)
-            {
-                state = LOSE_SCREEN;
             }
             for (int i = 0; i < att_limit; ++i)
             {
@@ -466,28 +449,10 @@ int main()
                 {
                     abilitySelection[i] = 0;
                 }
+                abilityImageID[i] == mainPlayer.allies[mainPlayer.firstUnitSelected]._class.abilities_list[mainPlayer.allies[mainPlayer.firstUnitSelected].nextAbility].imageID;
             }
 
-            int totalEnemyHP = 0;
-            for (int i = 0; i < game.characterCount; ++i)
-            {
-                if (game.characters[i]->visual == nullptr)
-                {
-                    continue;
-                }
-
-                if (game.characters[i]->id == CH_MONSTER)
-                {
-                    totalEnemyHP += game.characters[i]->hp;
-                }
-
-                gui_data.elements[entityHP_UI_Index + i].visual.Put(game.characters[i]->visual->rect.getPosition().x, game.characters[i]->visual->rect.getPosition().y);
-                entityHP[i] = 14 - static_cast<int>((static_cast<float>(game.characters[i]->hp) / static_cast<float>(game.characters[i]->_class.maxHP)) * 14.0f);
-
-                // window.draw(game.characters[i]->visual->rect);
-                window.draw(game.sortedSprites[i]->rect);
-            }
-            if (totalEnemyHP <= 0)
+            if (mainPlayer.allies[0].posX <= -2000.0f)
             {
                 state = WIN_SCREEN;
             }

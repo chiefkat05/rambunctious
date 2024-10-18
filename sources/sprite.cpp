@@ -35,6 +35,7 @@ sprite::sprite(const char *_path, float _x, float _y, float _w, float _h, unsign
         return;
     }
     tPile.list[tPile.count].setRepeated(true);
+    empty = false; // player sprite is empty for some fricking reason
 
     if (!foundMatchingTexture)
     {

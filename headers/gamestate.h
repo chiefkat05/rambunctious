@@ -132,14 +132,12 @@ struct gui
         if (quit)
             window->close();
 
-        window->draw(background.rect);
-
         for (int i = 0; i < elements.size(); ++i)
         {
             elements[i].update(mouseX, mouseY, mousePressed, mouseReleased, delta_time);
             window->draw(elements[i].visual.rect);
         }
-        menuBG.run(delta_time, true);
+        // menuBG.run(delta_time, true);
     }
 };
 
@@ -162,14 +160,14 @@ void characterMenu(player *player, dungeon *d, int argv)
 {
     for (int i = 0; i < character_limit; ++i)
     {
-        if (player->allies[i].visual == nullptr)
+        if (player->allies[i].visual.empty)
             continue;
 
         player->selected[i] = false;
-        player->allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 255));
+        player->allies[i].visual.rect.setColor(sf::Color(255, 255, 255, 255));
     }
     player->selected[argv] = true;
-    player->allies[argv].visual->rect.setColor(sf::Color(255, 255, 255, 170));
+    player->allies[argv].visual.rect.setColor(sf::Color(255, 255, 255, 170));
 }
 void gotoCharacter(player *player, dungeon *floor, int argv)
 {

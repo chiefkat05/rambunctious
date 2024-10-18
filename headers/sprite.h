@@ -21,6 +21,7 @@ struct sprite
     std::string path;
     sf::Sprite rect;
     unsigned int img;
+    bool empty = true;
 
     sprite();
 

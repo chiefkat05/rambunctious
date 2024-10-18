@@ -8,8 +8,7 @@
 #include "dungeon.h"
 #include "soundeffects.h"
 
-const unsigned int att_limit = 4;
-const unsigned int class_att_limit = 52;
+const unsigned int att_limit = 0;
 const unsigned int stat_limit = 14;
 const unsigned int entity_limit = 64; // also change in dungeon.h since there's another one there, also delete one of these so that there's only one pls
 const unsigned int character_limit = 6;
@@ -21,7 +20,7 @@ extern float massScale, massYOffset;
 soundhandler soundplayer;
 
 enum STATUS
-{
+{                // dungeon background is done, make character creator
     BUFFED,      // any effect originating from an ally
     NERFED,      // any effect originating from an enemy
     MINOR_WOUND, // take over 1% of hp in one hit, less than 10%
@@ -35,7 +34,7 @@ struct character;
 struct attack
 {
     int targetCount;
-    int activationFrame;
+    int activationFrame, imageID;
     float distanceRequired;
     character *targets[target_limit];
     character *parent;
@@ -122,25 +121,35 @@ struct ch_class
         }
     }
 
-    void setAbility(int index, void _func(int, attack *, character *), float distanceMultiple = 1.0f, int _frame = 0)
+    void setAbility(int index, void _func(int, attack *, character *), float distanceMultiple = 1.0f, int _frame = 0, int _imageID = 0)
     {
         abilities_list[index].use = _func;
         abilities_list[index].distanceRequired = attackRange * distanceMultiple;
         abilities_list[index].activationFrame = _frame;
+        abilities_list[index].imageID = _imageID;
     }
 };
 
 struct character
 {
+    // stats
+    int stat_speed = 5;
+    int stat_balance = 5;
+    int stat_will = 5;
+    int stat_warmth = 5;
+    int stat_sight = 5;
+    int stat_luck = 5;
+
+    // general
     ch_class _class;
-    float velocityX = 0.0f, velocityY = 0.0f;
+    float velocityX = 0.0f, velocityY = 0.0f, runSpeedMulti = 1.0f;
     int nextAbility = 0, lastAbility = 0;
 
     STATUS statuses[stat_limit];
     animation animations[animation_limit];
     float posX = 0.0f, posY = 0.0f, selectionSize = 12.0f;
     float walkToX = 0.0f, walkToY = 0.0f;
-    sprite *visual = nullptr;
+    sprite visual;
     aabb collider;
 
     character *target = nullptr;
@@ -156,12 +165,12 @@ struct character
     unsigned int initiative = 0;
 
     character() {}
-    character(sprite *v, IDENTIFICATION _id, ch_class cl) : visual(v)
+    character(sprite &v, IDENTIFICATION _id, ch_class cl) : visual(v)
     {
-        visual->rect.setTextureRect(sf::IntRect(0, 0, visual->spriteW, visual->spriteH)); // the brawler origin is off-center because he's 32x32 for animation purposes
-        visual->rect.setOrigin(sf::Vector2(static_cast<float>(visual->spriteW) * 0.5f, static_cast<float>(visual->spriteH) * 0.5f));
-        posX = visual->rect.getPosition().x;
-        posY = visual->rect.getPosition().y;
+        visual.rect.setTextureRect(sf::IntRect(0, 0, visual.spriteW, visual.spriteH));
+        visual.rect.setOrigin(sf::Vector2(static_cast<float>(visual.spriteW) * 0.5f, static_cast<float>(visual.spriteH) * 0.5f));
+        posX = visual.rect.getPosition().x;
+        posY = visual.rect.getPosition().y;
         walkToX = posX;
         walkToY = posY;
         id = _id;
@@ -170,6 +179,20 @@ struct character
 
         collider = aabb(posX, posY, posX + 16.0f, posY + 8.0f);
     } // pathfinding time also you can move everything into cpp files
+    character(std::string filepath, float x, float y, float w, float h, unsigned int fx, unsigned int fy, IDENTIFICATION _id, ch_class cl)
+    {
+        visual = sprite(filepath.c_str(), x, y, w, h, fx, fy);
+        std::cout << filepath << ", " << visual.empty << " hmm\n"; // okay
+        visual.rect.setTextureRect(sf::IntRect(0, 0, visual.spriteW, visual.spriteH));
+        visual.rect.setOrigin(sf::Vector2(static_cast<float>(visual.spriteW) * 0.5f, static_cast<float>(visual.spriteH) * 0.5f));
+        posX = visual.rect.getPosition().x;
+        posY = visual.rect.getPosition().y;
+        walkToX = posX;
+        walkToY = posY;
+        id = _id;
+        _class = cl;
+        hp = cl.maxHP;
+    }
 
     void LevelUp()
     {
@@ -232,9 +255,9 @@ struct character
 
         if (hp <= 0)
         {
-            visual->rect.setColor(sf::Color(50, 50, 50, 255));
-            visual->rect.setRotation(90);
-            visual->Put(posX + screenOffsetX, posY + screenOffsetY);
+            visual.rect.setColor(sf::Color(50, 50, 50, 255));
+            visual.rect.setRotation(90);
+            visual.Put(posX + screenOffsetX, posY + screenOffsetY);
             return;
         }
 
@@ -267,21 +290,23 @@ struct character
         if (walkToX != posX && walkToY == posY)
         {
             velocityX = -xWalkDist / std::abs(xWalkDist) * _class.runSpeed * delta_time;
+            velocityX = -xWalkDist;
         }
         if (walkToY != posY && walkToX == posX)
         {
             velocityY = -yWalkDist / std::abs(yWalkDist) * _class.runSpeed * delta_time;
+            velocityY = -yWalkDist;
         }
         if (walkToX != posX && walkToY != posY)
         {
             float normalizationCap = std::max(std::abs(xWalkDist), std::abs(yWalkDist));
-            velocityX = -xWalkDist / normalizationCap * _class.runSpeed * delta_time;
-            velocityY = -yWalkDist / normalizationCap * _class.runSpeed * delta_time;
+            velocityX = -xWalkDist / normalizationCap * (_class.runSpeed * delta_time);
+            velocityY = -yWalkDist / normalizationCap * (_class.runSpeed * delta_time);
         }
-        // if (std::abs(xWalkDist) < _class.runSpeed * delta_time * 1.2f) // find a good way to eliminate the overshoot (jittering)
-        //     posX = walkToX;
-        // if (std::abs(yWalkDist) < _class.runSpeed * delta_time * 1.2f)
-        //     posY = walkToY;
+        if (std::abs(xWalkDist) < _class.runSpeed * delta_time * 1.2f)
+            velocityX = 0.0f;
+        if (std::abs(yWalkDist) < _class.runSpeed * delta_time * 1.2f)
+            velocityY = 0.0f;
 
         if (animationFinished)
         {
@@ -290,7 +315,7 @@ struct character
 
         animations[playingAnim].run(delta_time, animationLooping);
 
-        visual->Put(posX + screenOffsetX, posY + screenOffsetY);
+        visual.Put(posX + screenOffsetX, posY + screenOffsetY);
 
         animationFinished = false;
 
@@ -299,13 +324,13 @@ struct character
     }
     void updatePosition()
     {
-        posX += velocityX;
-        posY += velocityY;
+        posX += velocityX * runSpeedMulti;
+        posY += velocityY * runSpeedMulti;
     }
 
     void SetAnimation(ANIMATION_MAPPINGS id, unsigned int s, unsigned int e, float spd)
     {
-        animations[id] = animation(visual, s, e, spd);
+        animations[id] = animation(&visual, s, e, spd);
     }
     void PlayAnimation(ANIMATION_MAPPINGS id, float delta_time, bool loops)
     {
@@ -340,14 +365,14 @@ struct player
                 maxY > allies[i].posY / massScale + massYOffset)
             {
                 selected[i] = true;
-                if (allies[i].visual != nullptr)
-                    allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 170));
+                if (!allies[i].visual.empty)
+                    allies[i].visual.rect.setColor(sf::Color(255, 255, 255, 170));
             }
             else
             {
                 selected[i] = false;
-                if (allies[i].visual != nullptr)
-                    allies[i].visual->rect.setColor(sf::Color(255, 255, 255, 255));
+                if (!allies[i].visual.empty)
+                    allies[i].visual.rect.setColor(sf::Color(255, 255, 255, 255));
             }
         }
     }
@@ -379,7 +404,7 @@ void quicksortSprites(sprite *sprites[entity_limit], int low, int high)
         quicksortSprites(sprites, low, pi - 1);
         quicksortSprites(sprites, pi + 1, high);
     }
-}
+} // quadtree, finishing attack system and targetting, character creation and input to the main player.
 
 // quadtree and collision stuff probably should go in game_system
 struct game_system
@@ -396,18 +421,18 @@ struct game_system
     {
         for (int i = 0; i < character_limit; ++i)
         {
-            if (p->allies[i].visual == nullptr)
+            if (p->allies[i].visual.empty)
                 continue;
 
             characters[characterCount] = &p->allies[i];
-            sortedSprites[characterCount] = characters[characterCount]->visual;
+            sortedSprites[characterCount] = &characters[characterCount]->visual;
             ++characterCount;
         }
     }
     void Add(character *e)
     {
         characters[characterCount] = e;
-        sortedSprites[characterCount] = characters[characterCount]->visual;
+        sortedSprites[characterCount] = &characters[characterCount]->visual;
         ++characterCount;
     }
 
@@ -430,7 +455,7 @@ struct game_system
         {
             for (int i = 0; i < characterCount; ++i)
             {
-                characters[i]->visual->Put(characters[i]->posX + floor.screenPositionX, characters[i]->posY + floor.screenPositionY);
+                characters[i]->visual.Put(characters[i]->posX + floor.screenPositionX, characters[i]->posY + floor.screenPositionY);
             }
             return;
         }
@@ -475,27 +500,6 @@ struct game_system
                 case CH_NEUTRAL:
                     break;
                 }
-
-                // if (target == nullptr && distance < 4000.0f && distance > 400.0f)
-                // {
-                //     target = &mainP.allies[i];
-                // }
-                // if (target == &mainP.allies[i] && distance > 4000.0f)
-                // {
-                //     target = nullptr;
-                // }
-
-                // if (target != nullptr)
-                // {
-                //     float xDist = unit.posX - target->posX;
-                //     float yDist = unit.posY - target->posY;
-                //     float normalizationCap = std::max(std::abs(xDist), std::abs(yDist));
-
-                //     float distance = xDist * xDist + yDist * yDist;
-
-                //     if (distance > 400.0f)
-                //         unit.MoveTo(unit.posX - xDist / normalizationCap, unit.posY - yDist / normalizationCap);
-                // }
             }
             characters[i]->Update(delta_time, floor.screenPositionX, floor.screenPositionY);
 
@@ -535,11 +539,13 @@ struct game_system
                 {
                     characters[i]->velocityY *= firstCollisionHitTest;
                 }
-            } // quadtree implementation is next
+            }
             characters[i]->updatePosition();
         }
     }
 };
+
+void ability_null(int value, attack *thisAttack, character *parent) {}
 
 void ability_simpleMelee(int value, attack *thisAttack, character *parent)
 {

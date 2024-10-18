@@ -16,7 +16,7 @@ const unsigned int entity_limit_2 = 64;
 
 struct dungeon
 {
-    bool start = true, end = false;
+    bool start = true, end = false, dungeonInitialized = false;
     sprite tiles[width_limit][height_limit];
 
     sprite enemies[entity_limit_2];
@@ -31,13 +31,18 @@ struct dungeon
 
     float screenPositionX = 0.0f, screenPositionY = 0.0f, lastScreenPosX = 0.0f, lastScreenPosY = 0.0f, screenChangeDistanceX, screenChangeDistanceY;
 
+    dungeon()
+    {
+        dungeonInitialized = false;
+    }
     dungeon(const char *tileSetPath, const unsigned int xSize, const unsigned int ySize, float massScale, float massYOffset)
     {
+        dungeonInitialized = true;
         for (unsigned int x = 0; x < width_limit; ++x)
         {
             for (unsigned int y = 0; y < height_limit; ++y)
             {
-                tiles[x][y] = sprite(tileSetPath, static_cast<float>(x), static_cast<float>(y), xSize * massScale, ySize * massScale, 1, 1);
+                tiles[x][y] = sprite(tileSetPath, static_cast<float>(x), static_cast<float>(y), xSize, ySize, 1, 1);
                 tiles[x][y].Put(static_cast<float>(x) * tiles[x][y].spriteW, static_cast<float>(y) * tiles[x][y].spriteH);
             }
         } // the pointer to the ui_element's visual object is incorrect inside the element's update function
