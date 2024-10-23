@@ -46,8 +46,13 @@ sprite::sprite(const char *_path, float _x, float _y, float _w, float _h, unsign
     }
 
     rect = sf::Sprite(tPile.list[img]);
-    framesX = _fx;
-    framesY = _fy;
+
+    framesX = 1;
+    framesY = 1;
+    if (_fx > 1)
+        framesX = _fx;
+    if (_fy > 1)
+        framesY = _fy;
 
     path = _path;
 

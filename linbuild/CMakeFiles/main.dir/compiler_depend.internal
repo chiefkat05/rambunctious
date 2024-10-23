@@ -5,9 +5,9 @@ CMakeFiles/main.dir/sources/main.cpp.o
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/main.cpp
  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/collision.h
  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/effects.h
  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/gamestate.h
  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h
- /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/soundeffects.h
  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/sprite.h
  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/system.h
  /usr/include/SFML/Audio.hpp

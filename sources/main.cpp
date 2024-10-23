@@ -372,6 +372,9 @@ int main()
     sprite resolutionBlinderTop("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
     sprite resolutionBlinderBottom("../img/ui/resolution_blinder.png", 0.0f, massYOffset * massScale, 1.0f, 1.0f, 1, 1);
 
+    particlesystem snowparticles("../img/particles/snow.png", 1.0f, 1.0f, 0, 0, 4, 4, 64);
+    game.Add(&snowparticles);
+
     while (window.isOpen())
     {
         mouseX = sf::Mouse::getPosition(window).x;
@@ -401,7 +404,7 @@ int main()
 
         mouseUpdate();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // player can walk through gaps in walls for some reason
             window.close();
 
         if (!pauseKeyHeld && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -421,11 +424,12 @@ int main()
         window.draw(gui_data.background.rect);
         if (state == DUNGEON_SCREEN && mainDungeon.dungeonInitialized)
         {
+            snowparticles.spawn(-5.0f, 0.0f, -2.0f, 128.0f, 20.0f, 50.0f, 50.0f, -10.0f, 150.0f, 10.0f, mainDungeon.screenPositionX, mainDungeon.screenPositionY);
             mainDungeon.updateScreenPosition(mouseX, mouseY, delta_time, massScale, massYOffset);
-            std::cout << mainPlayer.allies[0].visual.empty << ", " << mainPlayer.allies[0].visual.path << ", " << mainPlayer.allies[0].posX << "\n";
 
             mainDungeon.draw(&window);
             game.update(mainDungeon, delta_time);
+            unitControl(game, mainPlayer, window, &mainDungeon);
 
             mainPlayer.firstUnitSelected = -1;
             for (int i = 0; i < character_limit; ++i)
@@ -442,19 +446,24 @@ int main()
                                                        static_cast<float>(mainPlayer.allies[i]._class.experienceToLvlUp)) *
                                                       24.0f);
             }
-            for (int i = 0; i < att_limit; ++i)
+            for (int i = 0; i < game.characterCount; ++i)
             {
-                abilitySelection[i] = 1;
-                if (mainPlayer.firstUnitSelected != -1 && mainPlayer.allies[mainPlayer.firstUnitSelected].nextAbility == i)
-                {
-                    abilitySelection[i] = 0;
-                }
-                abilityImageID[i] == mainPlayer.allies[mainPlayer.firstUnitSelected]._class.abilities_list[mainPlayer.allies[mainPlayer.firstUnitSelected].nextAbility].imageID;
+                if (game.characters[i]->visual.empty)
+                    continue;
+
+                window.draw(game.characters[i]->visual.rect);
             }
 
-            if (mainPlayer.allies[0].posX <= -2000.0f)
+            if (mainPlayer.allies[0].posX <= -2.0f)
             {
                 state = WIN_SCREEN;
+            }
+        }
+        for (int i = 0; i < game.particlesystemcount; ++i)
+        {
+            for (int j = 0; j < game.particles[i]->particle_count; ++j)
+            {
+                window.draw(game.particles[i]->particles[j].visual.rect);
             }
         }
         if (!uiKeyHeld && sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))

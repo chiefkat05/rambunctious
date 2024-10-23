@@ -304,6 +304,6 @@ CMakeFiles/main.dir/sources/main.cpp.obj: \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/system.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/dungeon.h \
- /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/soundeffects.h \
+ /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/effects.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/gamestate.h \
  /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/../headers/collision.h

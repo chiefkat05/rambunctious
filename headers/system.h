@@ -6,7 +6,7 @@
 #include "sprite.h"
 #include "collision.h"
 #include "dungeon.h"
-#include "soundeffects.h"
+#include "effects.h"
 
 const unsigned int att_limit = 0;
 const unsigned int stat_limit = 14;
@@ -182,7 +182,6 @@ struct character
     character(std::string filepath, float x, float y, float w, float h, unsigned int fx, unsigned int fy, IDENTIFICATION _id, ch_class cl)
     {
         visual = sprite(filepath.c_str(), x, y, w, h, fx, fy);
-        std::cout << filepath << ", " << visual.empty << " hmm\n"; // okay
         visual.rect.setTextureRect(sf::IntRect(0, 0, visual.spriteW, visual.spriteH));
         visual.rect.setOrigin(sf::Vector2(static_cast<float>(visual.spriteW) * 0.5f, static_cast<float>(visual.spriteH) * 0.5f));
         posX = visual.rect.getPosition().x;
@@ -411,6 +410,9 @@ struct game_system
 {
     character *characters[entity_limit];
     sprite *sortedSprites[entity_limit];
+    particlesystem *particles[particle_system_limit];
+    int particlesystemcount;
+
     int characterCount = 0;
     bool paused = false;
     terrain ground, air;
@@ -434,6 +436,11 @@ struct game_system
         characters[characterCount] = e;
         sortedSprites[characterCount] = &characters[characterCount]->visual;
         ++characterCount;
+    }
+    void Add(particlesystem *p)
+    {
+        particles[particlesystemcount] = p;
+        ++particlesystemcount;
     }
 
     void handleMusic()
@@ -541,6 +548,11 @@ struct game_system
                 }
             }
             characters[i]->updatePosition();
+        }
+
+        for (int i = 0; i < particlesystemcount; ++i)
+        {
+            particles[i]->update(delta_time, floor.screenChangeDistanceX, floor.screenChangeDistanceY);
         }
     }
 };

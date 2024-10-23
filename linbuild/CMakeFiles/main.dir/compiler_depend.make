@@ -4,9 +4,9 @@
 CMakeFiles/main.dir/sources/main.cpp.o: /home/chiefkat/Documents/vscodeprojects/rambunctious/sources/main.cpp \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/collision.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h \
+  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/effects.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/gamestate.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h \
-  /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/soundeffects.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/sprite.h \
   /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/system.h \
   /usr/include/SFML/Audio.hpp \
@@ -988,13 +988,21 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 
 /usr/include/SFML/System/Thread.inl:
 
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h:
+
 /usr/include/stdio.h:
 
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/collision.h:
 
 /usr/include/bits/wordsize.h:
 
-/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/dungeon.h:
+/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/effects.h:
+
+/usr/include/c++/14.2.1/iostream:
+
+/usr/include/asm/errno.h:
+
+/usr/include/bits/stdint-uintn.h:
 
 /usr/include/SFML/Graphics/VertexBuffer.hpp:
 
@@ -1009,10 +1017,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/c++/14.2.1/bits/nested_exception.h:
 
 /home/chiefkat/Documents/vscodeprojects/rambunctious/headers/setup.h:
-
-/usr/include/SFML/Graphics/Sprite.hpp:
-
-/usr/include/SFML/Graphics/Export.hpp:
 
 /usr/include/c++/14.2.1/iosfwd:
 
@@ -1053,6 +1057,10 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/c++/14.2.1/bits/memoryfwd.h:
 
 /usr/include/c++/14.2.1/bits/requires_hosted.h:
+
+/usr/include/SFML/Graphics/Export.hpp:
+
+/usr/include/SFML/Graphics/Sprite.hpp:
 
 /usr/include/c++/14.2.1/vector:
 
@@ -1171,12 +1179,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/SFML/Audio/SoundFileWriter.hpp:
 
 /usr/include/bits/stdint-least.h:
-
-/usr/include/c++/14.2.1/iostream:
-
-/usr/include/asm/errno.h:
-
-/usr/include/bits/stdint-uintn.h:
 
 /usr/include/SFML/Window/Vulkan.hpp:
 
@@ -1399,8 +1401,6 @@ CMakeFiles/main.dir/sources/sprite.cpp.o: /home/chiefkat/Documents/vscodeproject
 /usr/include/c++/14.2.1/cstdlib:
 
 /usr/include/c++/14.2.1/bits/stl_algobase.h:
-
-/home/chiefkat/Documents/vscodeprojects/rambunctious/headers/soundeffects.h:
 
 /usr/include/c++/14.2.1/bits/stl_algo.h:
 
